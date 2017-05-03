@@ -171,8 +171,8 @@ namespace NPascalCoin {
 				["last_n_operation"] = last_n_operation,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payloadMethod"] = fee,
-				["pwd"] = fee,
+				["payloadMethod"] = payloadMethod,
+				["pwd"] = pwd,
 			});
 		}
 
@@ -186,8 +186,8 @@ namespace NPascalCoin {
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payloadMethod"] = fee,
-				["pwd"] = fee,
+				["payloadMethod"] = payloadMethod,
+				["pwd"] = pwd,
 			});
 		}
 
@@ -272,45 +272,6 @@ namespace NPascalCoin {
 			return Invoke<bool>(ApiMethodName.startnode.ToString());
 		}
 
-
-		protected virtual T Invoke_del<T>(string method, IDictionary<string, object> arguments = null) {
-			using (var callScope = new CallScope(this)) {
-				var webClient = new WebClient();
-				webClient.Headers.Set(HttpRequestHeader.UserAgent, "NPascalCoin v0.1");
-				webClient.Headers.Set(HttpRequestHeader.ContentType, "application/json-rpc");
-				//webClient.Headers.Set(HttpRequestHeader.);
-
-				var request = new JObject {
-					["jsonrpc"] = "2.0",
-					["id"] = callScope.CallID,
-					["method"] = method
-				};
-
-				if (arguments?.Count > 0) {
-					var @params = new JArray();
-					foreach (var param in arguments.Where(x => x.Value != null)) {
-						@params.Add(new JProperty(param.Key, param.Value));
-					}
-					request.Add(new JProperty("params", @params));
-				}
-
-				var requestJson = JsonConvert.SerializeObject(request);
-				Trace.WriteLine($"RPC Request:{Environment.NewLine}{requestJson}", TraceCategories.RPC);
-
-				try {
-					var responseJson = webClient.UploadString(_url, "POST", requestJson);
-					Trace.WriteLine($"RPC Response:{Environment.NewLine}{responseJson}", TraceCategories.RPC);
-					return JsonConvert.DeserializeObject<T>(responseJson);
-				} catch (WebException error) {
-					if (error.Response == null)
-						throw;
-					var resp = new StreamReader(error.Response.GetResponseStream()).ReadToEnd();
-					var errorDTO = JsonConvert.DeserializeObject<ErrorResultDTO>(resp);
-					throw new PascalCoinRPCException(errorDTO);
-				}
-			}
-		}
-
 		protected virtual T Invoke<T>(string method, IDictionary<string, object> arguments = null) {
 			using (var callScope = new CallScope(this)) {
 				var webRequest = (HttpWebRequest)WebRequest.Create(_url);
@@ -328,7 +289,8 @@ namespace NPascalCoin {
 				if (arguments?.Count > 0) {
 					var @params = new JArray();
 					foreach (var param in arguments.Where(x => x.Value != null)) {
-						@params.Add(new JProperty(param.Key, param.Value));
+						var val = param.Value.GetType().IsEnum ? Convert.ChangeType(param.Value, Enum.GetUnderlyingType(param.Value.GetType())) : param.Value;
+						@params.Add(new JProperty(param.Key, val));
 					}
 					request.Add(new JProperty("params", @params));
 				}
