@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -287,10 +288,10 @@ namespace NPascalCoin {
 				};
 
 				if (arguments?.Count > 0) {
-					var @params = new JArray();
+					var @params = new JObject();
 					foreach (var param in arguments.Where(x => x.Value != null)) {
-						var val = param.Value.GetType().IsEnum ? Convert.ChangeType(param.Value, Enum.GetUnderlyingType(param.Value.GetType())) : param.Value;
-						@params.Add(new JProperty(param.Key, val));
+						var val = param.Value; //param.Value.GetType().IsEnum ? Convert.ChangeType(param.Value, Enum.GetUnderlyingType(param.Value.GetType())) : param.Value;
+						@params.Add( new  JProperty(param.Key, val));
 					}
 					request.Add(new JProperty("params", @params));
 				}
@@ -316,7 +317,32 @@ namespace NPascalCoin {
 									throw new ApplicationException($"JSON-RPC response was an invalid version '{jsonResponse.RPCVersion ?? string.Empty}'. Expected '2.0'");
 								if (jsonResponse.ID != callScope.CallID)
 									throw new ApplicationException($"JSON-RPC response ID had invalid value '{jsonResponse.ID}'. Expected '{callScope.CallID}'");
-								return JsonConvert.DeserializeObject<T>(jsonResponse.Result);
+								if (jsonResponse.Error != null) { 									
+									throw new PascalCoinRPCException(JsonConvert.DeserializeObject<ErrorResultDTO>(jsonResponse.Error.ToString()));
+								}
+								if (jsonResponse.Result == null)
+									return default(T);
+								if (jsonResponse.Result.GetType().IsPrimitive)
+									return (T)Convert.ChangeType(jsonResponse.Result, typeof(T));
+								if (jsonResponse.Result is JToken) {
+									return JsonConvert.DeserializeObject<T>(((JToken)jsonResponse.Result).ToString());
+								}
+								if (jsonResponse.Result is ICollection<JToken>) { 
+									if (!typeof(T).IsArray)
+										throw new ArgumentException("Result returned an array but requesting type is not an array", nameof(T));
+
+									var objArr = ((ICollection<JToken>) jsonResponse.Result).Select(x => JsonConvert.DeserializeObject(x.ToString(), typeof(T).GetElementType())).ToArray();
+									var retArr = Array.CreateInstance(typeof(T).GetElementType(), objArr.Length);
+									Array.Copy(objArr, retArr, objArr.Length);
+									return (T) (object)retArr;
+
+
+								}
+
+								//if (jsonResponse.Result is JObject)
+								//return ((JObject) jsonResponse.Result).ToString();
+
+								return JsonConvert.DeserializeObject<T>(jsonResponse.Result.ToString());
 							}
 						}
 					}
@@ -351,7 +377,10 @@ namespace NPascalCoin {
 			public int ID { get; set; }
 
 			[JsonProperty("result")]
-			public string Result { get; set; }
+			public object Result { get; set; }
+
+			[JsonProperty("error")]
+			public object Error { get; set; }
 		}
 	}
 }

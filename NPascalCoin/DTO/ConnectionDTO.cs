@@ -71,7 +71,7 @@ namespace NPascalCoin.DTO {
 		/// Net timediff of other node (vs wallet)
 		/// </summary>
 		[JsonProperty("timediff")]
-		public uint TimeDiff { get; set; }
+		public int TimeDiff { get; set; }
 	}
 
 }
