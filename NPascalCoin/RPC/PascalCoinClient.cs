@@ -36,7 +36,7 @@ namespace NPascalCoin {
 
 		}
 
-		public AccountDTO[] GetWalletAccounts(string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null) {
+		public AccountDTO[] GetWalletAccounts(string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null) {
 			return Invoke<AccountDTO[]>(ApiMethodName.getwalletaccounts.ToString(), new Dictionary<string, object>() {
 				["enc_pubkey"] = enc_pubkey,
 				["b58_pubkey"] = b58_pubkey,
@@ -45,7 +45,7 @@ namespace NPascalCoin {
 			});
 		}
 
-		public uint GetWalletAccountsCount(string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null) {
+		public uint GetWalletAccountsCount(string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null) {
 			return Invoke<uint>(ApiMethodName.getwalletaccountscount.ToString(), new Dictionary<string, object>() {
 				["enc_pubkey"] = enc_pubkey,
 				["b58_pubkey"] = b58_pubkey,
@@ -61,7 +61,7 @@ namespace NPascalCoin {
 			});
 		}
 
-		public PublicKeyDTO[] GetWalletPubKeys(uint? start = null, uint? max = null) {
+		public PublicKeyDTO[] GetWalletPubKeys(int? start = null, int? max = null) {
 			return Invoke<PublicKeyDTO[]>(ApiMethodName.getwalletpubkeys.ToString(), new Dictionary<string, object>() {
 				["start"] = start,
 				["max"] = max,
@@ -81,7 +81,7 @@ namespace NPascalCoin {
 			});
 		}
 
-		public BlockDTO[] GetBlocks(uint? last = null, uint? start = null, uint? end = null) {
+		public BlockDTO[] GetBlocks(uint? last = null, int? start = null, int? end = null) {
 			return Invoke<BlockDTO[]>(ApiMethodName.getblocks.ToString(), new Dictionary<string, object> {
 				["last"] = last,
 				["start"] = start,
@@ -100,7 +100,7 @@ namespace NPascalCoin {
 			});
 		}
 
-		public OperationDTO[] GetBlockOperations(uint block, uint? start = null, uint? max = null) {
+		public OperationDTO[] GetBlockOperations(uint block, int? start = null, int? max = null) {
 			return Invoke<OperationDTO[]>(ApiMethodName.getblockoperations.ToString(), new Dictionary<string, object>() {
 				["block"] = block,
 				["start"] = start,
@@ -108,7 +108,7 @@ namespace NPascalCoin {
 			});
 		}
 
-		public OperationDTO[] GetAccountOperations(uint account, uint? depth = null, uint? start = null, uint? max = null) {
+		public OperationDTO[] GetAccountOperations(uint account, int? depth = null, int? start = null, int? max = null) {
 			return Invoke<OperationDTO[]>(ApiMethodName.getaccountoperations.ToString(), new Dictionary<string, object>() {
 				["account"] = account,
 				["depth"] = depth,

@@ -37,7 +37,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet accounts starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max accounts. If not provided, max=100 by default</param>
 		/// <returns>Each JSON array item contains an Account Object</returns>
-		public static Task<AccountDTO[]> GetWalletAccountsAsync(this IPascalCoinClient client, string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null) {
+		public static Task<AccountDTO[]> GetWalletAccountsAsync(this IPascalCoinClient client, string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null) {
 			return Task.Run(() => client.GetWalletAccounts(enc_pubkey, b58_pubkey, start, max));
 		}
 
@@ -49,7 +49,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet accounts starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max accounts. If not provided, max=100 by default</param>
 		/// <returns>Returns an integer with total</returns>		
-		public static Task<uint> GetWalletAccountsCountAsync(this IPascalCoinClient client, string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null) {
+		public static Task<uint> GetWalletAccountsCountAsync(this IPascalCoinClient client, string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null) {
 			return Task.Run(() => client.GetWalletAccountsCount());
 		}
 
@@ -71,7 +71,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet public keys starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max public keys. If not provided, max=100 by default</param>
 		/// <returns>Returns a JSON Array with "Public Key Object"</returns>
-		public static Task<PublicKeyDTO[]> GetWalletPubKeysAsync(this IPascalCoinClient client, uint? start = null, uint? max = null) {
+		public static Task<PublicKeyDTO[]> GetWalletPubKeysAsync(this IPascalCoinClient client, int? start = null, int? max = null) {
 			return Task.Run(() => client.GetWalletPubKeys(start, max));
 		}
 
@@ -102,7 +102,7 @@ namespace NPascalCoin {
 		/// <param name="end">To this block</param>
 		/// <remarks>Must use last exclusively, or start and end, or error</remarks>
 		/// <returns></returns>
-		public static Task<BlockDTO[]> GetBlocksAsync(this IPascalCoinClient client, uint? last = null, uint? start = null, uint? end = null) {
+		public static Task<BlockDTO[]> GetBlocksAsync(this IPascalCoinClient client, uint? last = null, int? start = null, int? end = null) {
 			return Task.Run(() => client.GetBlocks(last, start, end));
 		}
 
@@ -131,7 +131,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will start at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max registers. If not provided, max=100 by default</param>
 		/// <returns>Returns a JSON Array with "Operation Object" items</returns>
-		public static Task<OperationDTO[]> GetBlockOperationsAsync(this IPascalCoinClient client, uint block, uint? start = null, uint? max = null) {
+		public static Task<OperationDTO[]> GetBlockOperationsAsync(this IPascalCoinClient client, uint block, int? start = null, int? max = null) {
 			return Task.Run(() => client.GetBlockOperations(block, start, max));
 		}
 
@@ -143,7 +143,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will start at this position (index starts at position 0). If start is -1, then will include pending operations, otherwise only operations included on the blockchain</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max registers. If not provided, max=100 by default</param>
 		/// <returns>Returns an array holding operations made over account in "Operation Object" format</returns>
-		public static Task<OperationDTO[]> GetAccountOperationsAsync(this IPascalCoinClient client, uint account, uint? depth = null, uint? start = null, uint? max = null) {
+		public static Task<OperationDTO[]> GetAccountOperationsAsync(this IPascalCoinClient client, uint account, int? depth = null, int? start = null, int? max = null) {
 			return Task.Run(() => client.GetAccountOperations(account, depth, start, max));
 		}
 

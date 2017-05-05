@@ -33,7 +33,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet accounts starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max accounts. If not provided, max=100 by default</param>
 		/// <returns>Each JSON array item contains an Account Object</returns>
-		AccountDTO[] GetWalletAccounts(string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null);
+		AccountDTO[] GetWalletAccounts(string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null);
 
 		/// <summary>
 		/// Get number of available wallet accounts (total or filtered by public key)
@@ -43,7 +43,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet accounts starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max accounts. If not provided, max=100 by default</param>
 		/// <returns>Returns an integer with total</returns>		
-		uint GetWalletAccountsCount(string enc_pubkey = null, string b58_pubkey = null, uint? start = null, uint? max = null);
+		uint GetWalletAccountsCount(string enc_pubkey = null, string b58_pubkey = null, int? start = null, int? max = null);
 
 		/// <summary>
 		/// Returns a JSON Object with a public key if found in the Wallet
@@ -61,7 +61,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will return wallet public keys starting at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max public keys. If not provided, max=100 by default</param>
 		/// <returns>Returns a JSON Array with "Public Key Object"</returns>
-		PublicKeyDTO[] GetWalletPubKeys(uint? start = null, uint? max = null);
+		PublicKeyDTO[] GetWalletPubKeys(int? start = null, int? max = null);
 
 		/// <summary>
 		/// Returns coins balance.
@@ -86,7 +86,7 @@ namespace NPascalCoin {
 		/// <param name="end">To this block</param>
 		/// <remarks>Must use last exclusively, or start and end, or error</remarks>
 		/// <returns></returns>
-		BlockDTO[] GetBlocks(uint? last = null, uint? start = null, uint? end = null);
+		BlockDTO[] GetBlocks(uint? last = null, int? start = null, int? end = null);
 
 		/// <summary>
 		/// Returns an Integer with blockcount of node
@@ -109,7 +109,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will start at this position (index starts at position 0)</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max registers. If not provided, max=100 by default</param>
 		/// <returns>Returns a JSON Array with "Operation Object" items</returns>
-		OperationDTO[] GetBlockOperations(uint block, uint? start = null, uint? max = null);
+		OperationDTO[] GetBlockOperations(uint block, int? start = null, int? max = null);
 
 		/// <summary>
 		/// Return a JSON Array with "Operation Object" items. Operations made over an account Operations are returned in DESCENDING order
@@ -119,7 +119,7 @@ namespace NPascalCoin {
 		/// <param name="start">Integer (optional, default = 0). If provided, will start at this position (index starts at position 0). If start is -1, then will include pending operations, otherwise only operations included on the blockchain</param>
 		/// <param name="max">Integer (optional, default = 100). If provided, will return max registers. If not provided, max=100 by default</param>
 		/// <returns>Returns an array holding operations made over account in "Operation Object" format</returns>
-		OperationDTO[] GetAccountOperations(uint account, uint? depth = null, uint? start = null, uint? max = null);
+		OperationDTO[] GetAccountOperations(uint account, int? depth = null, int? start = null, int? max = null);
 
 		/// <summary>
 		/// Return a JSON Array with "Operation Object" items with operations pending to be included at the Blockchain.

@@ -114,6 +114,9 @@ namespace NPascalCoin.DTO {
 		/// Operation hash used to find this operation in the blockchain. (HEXASTRING).
 		/// </summary>
 		[JsonProperty("ophash")]
-		public string OPID { get; set; }
+		public string Ophash { get; set; }
+
+		[JsonProperty("payload")]
+		public string PayLoad { get; set; }
 	}	
 }

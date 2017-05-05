@@ -59,7 +59,7 @@
     <Compile Include="DTO\AccountDTO.cs" />
     <Compile Include="DTO\KeyType.cs" />
     <Compile Include="DTO\OperationType.cs" />
-    <Compile Include="Extensions\IPascalCoinClient.cs" />
+    <Compile Include="Extensions\PascalCoinClientExtensions.cs" />
     <Compile Include="RPC\ApiMethodName.cs" />
     <Compile Include="RPC\PascalCoinRPCException.cs" />
     <Compile Include="RPC\PascalCoinClient.cs" />
