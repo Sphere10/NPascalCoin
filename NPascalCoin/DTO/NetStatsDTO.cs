@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// Embedded JSON object describing node protocol support
 	/// </summary>
-	public class NetStatsDTO {
+	public class NetStatsDTO : PascalCoinDTO {
 
 		[JsonProperty("active")]
 		public uint Active { get; set; }

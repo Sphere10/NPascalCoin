@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// An "Operation object" is a JSON object with information about an operation.
 	/// </summary>
-	public class OperationDTO {
+	public class OperationDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// If operation is invalid, value=false  (optional)

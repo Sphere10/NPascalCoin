@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// A "Public Key object" is a JSON object with information about a public key.
 	/// </summary>
-	public class PublicKeyDTO {
+	public class PublicKeyDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// Human readable name stored at the Wallet for this key

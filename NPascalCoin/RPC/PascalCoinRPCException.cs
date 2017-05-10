@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPascalCoin.DTO;
 
-namespace NPascalCoin {
+namespace NPascalCoin.RPC {
 	public class PascalCoinRPCException : ApplicationException {
 		public PascalCoinRPCException(ErrorResultDTO result) : base($"{result.ErrorCode} - {result.Message}") {
 			Error = result;

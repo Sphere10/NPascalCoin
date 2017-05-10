@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// An "Account object" is a JSON object with information about an account.
 	/// </summary>
-	public class AccountDTO {
+	public class AccountDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// Account number

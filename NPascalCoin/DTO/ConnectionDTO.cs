@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// A "Connection object" is a JSON object with a connection to other node information.
 	/// </summary>
-	public class ConnectionDTO {
+	public class ConnectionDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// True if this connection is to a server node.False if this connection is a client node

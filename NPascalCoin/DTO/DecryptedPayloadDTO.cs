@@ -10,7 +10,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// JSON object descibing a decrypted payload 
 	/// </summary>
-	public class DecryptedPayloadDTO {
+	public class DecryptedPayloadDTO : PascalCoinDTO {
 		/// <summary>
 		///  Decryption result
 		/// </summary>

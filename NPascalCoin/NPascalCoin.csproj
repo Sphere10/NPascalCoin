@@ -44,33 +44,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\PascalCoinDTO.cs" />
     <Compile Include="DTO\DecryptedPayloadDTO.cs" />
     <Compile Include="DTO\NodeServerDTO.cs" />
+    <Compile Include="Enums\PascalCoinNetwork.cs" />
     <Compile Include="DTO\NetStatsDTO.cs" />
     <Compile Include="DTO\NetProtocolDTO.cs" />
     <Compile Include="DTO\NodeStatusDTO.cs" />
     <Compile Include="DTO\ErrorResultDTO.cs" />
-    <Compile Include="DTO\PayloadMethod.cs" />
+    <Compile Include="Enums\PayloadMethod.cs" />
     <Compile Include="DTO\RawOperationDTO.cs" />
     <Compile Include="DTO\PublicKeyDTO.cs" />
     <Compile Include="DTO\ConnectionDTO.cs" />
     <Compile Include="DTO\OperationDTO.cs" />
     <Compile Include="DTO\BlockDTO.cs" />
     <Compile Include="DTO\AccountDTO.cs" />
-    <Compile Include="DTO\KeyType.cs" />
-    <Compile Include="DTO\OperationType.cs" />
+    <Compile Include="Enums\KeyType.cs" />
+    <Compile Include="Enums\OperationType.cs" />
     <Compile Include="Extensions\PascalCoinClientExtensions.cs" />
     <Compile Include="RPC\ApiMethodName.cs" />
+    <Compile Include="RPC\PascalCoinClientConfiguration.cs" />
     <Compile Include="RPC\PascalCoinRPCException.cs" />
     <Compile Include="RPC\PascalCoinClient.cs" />
     <Compile Include="RPC\IPascalCoinClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DTO\ErrorCode.cs" />
+    <Compile Include="Enums\ErrorCode.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="TraceCategories.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Indexers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

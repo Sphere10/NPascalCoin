@@ -10,7 +10,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// Embedded JSON object describing a nodes list of servers
 	/// </summary>
-	public class NodeServerDTO {
+	public class NodeServerDTO : PascalCoinDTO {
 		[JsonProperty("ip")]
 		public string IP { get; set; }
 

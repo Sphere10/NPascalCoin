@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NPascalCoin.DTO {
+// ReSharper disable once CheckNamespace
+namespace NPascalCoin {
 	public enum ErrorCode {
 		InternalError = 100,
 		MethodNotFound = 1001,

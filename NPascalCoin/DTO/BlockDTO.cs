@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// A "Block object" is a JSON object with information about a Blockchain's block. 
 	/// </summary>
-	public class BlockDTO {
+	public class BlockDTO : PascalCoinDTO {
 		
 		/// <summary>
 		/// Block number

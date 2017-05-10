@@ -13,10 +13,17 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPascalCoin.DTO;
 
-namespace NPascalCoin {
+
+namespace NPascalCoin.RPC {
 	public class PascalCoinClient : IPascalCoinClient {
 		private readonly Uri _url;
 		private int _callID;
+
+		public PascalCoinClient() : this(PascalCoinClientConfiguration.DefaultMainNet) {			
+		}
+
+		public PascalCoinClient(PascalCoinClientConfiguration configuration) : this(configuration.Server, configuration.Port) {			
+		}
 
 		public PascalCoinClient(string server, int port) {
 			_url = new Uri($"http://{server}:{port}");			

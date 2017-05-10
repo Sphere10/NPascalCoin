@@ -10,7 +10,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// JSON-RPC Error result
 	/// </summary>
-	public class ErrorResultDTO {
+	public class ErrorResultDTO : PascalCoinDTO {
 		[JsonProperty("code")]
 		public ErrorCode ErrorCode { get; set; }
 

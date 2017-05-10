@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// Embedded JSON object describing node protocol support
 	/// </summary>
-	public class NetProtocolDTO {
+	public class NetProtocolDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// Net protocol version

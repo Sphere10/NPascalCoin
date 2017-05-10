@@ -11,7 +11,7 @@ namespace NPascalCoin.DTO {
 	/// <summary>
 	/// Information about node
 	/// </summary>
-	public class NodeStatusDTO {
+	public class NodeStatusDTO : PascalCoinDTO {
 
 		/// <summary>
 		/// Must be true, otherwise Node is not ready to execute operations

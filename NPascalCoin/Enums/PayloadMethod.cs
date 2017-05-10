@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NPascalCoin.DTO {
+// ReSharper disable once CheckNamespace
+namespace NPascalCoin {
 
 	/// <summary>
 	/// Type of payload encoded.
