@@ -5,9 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NPascalCoin.DTO;
+using NPascalCoin.RPC;
 
 namespace NPascalCoin {
 	public static class PascalCoinClientExtensions {
+
+		#region Lock scopes
+
+		public static IDisposable EnterUnlockWalletScope(this IPascalCoinClient client, string pwd) {
+			return new UnlockWalletScope(client, pwd);
+		}
+
+		#endregion
+
+		#region Async overloads extensions
+
+		public static async Task<IDisposable> EnterUnlockScopeAsync(this IPascalCoinClient client, string pwd) {
+			return await Task.Run(() => client.EnterUnlockWalletScope(pwd));
+		}
 
 		/// <summary>
 		/// Adds a node to connect
@@ -397,5 +412,6 @@ namespace NPascalCoin {
 			return Task.Run(() => client.StartNode());
 		}
 
+		#endregion
 	}
 }

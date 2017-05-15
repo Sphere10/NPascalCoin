@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace NPascalCoin.DTO {
 	/// <summary>
@@ -39,7 +40,8 @@ namespace NPascalCoin.DTO {
 		/// String - "key" or "pwd"
 		/// </summary>
 		[JsonProperty("payload_method")]
-		public PayloadMethod PayloadMethod { get; set; }
+		[JsonConverter(typeof(StringEnumConverter))]
+		public DecryptedPayloadMethod PayloadMethod { get; set; }
 
 		/// <summary>
 		/// HEXASTRING - Encoded public key used to decrypt when method = "key"

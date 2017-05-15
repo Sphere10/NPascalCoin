@@ -51,7 +51,7 @@ namespace NPascalCoin.DTO {
 		/// Return null when operation is not included on a blockchain yet, 0 means that is included in highest block and so on... (New on Build 1.4.3)
 		/// </summary>
 		[JsonProperty("maturation")]
-		public uint Maturation { get; set; }
+		public uint? Maturation { get; set; }
 
 		/// <summary>
 		/// Operation type.

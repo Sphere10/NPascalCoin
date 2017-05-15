@@ -14,6 +14,10 @@ using NPascalCoin.DTO;
 
 namespace NPascalCoin.RPC {
 	public class PascalCoinRPCException : ApplicationException {
+
+		public PascalCoinRPCException(string error) : base(error)  {			
+		}
+
 		public PascalCoinRPCException(ErrorResultDTO result) : base($"{result.ErrorCode} - {result.Message}") {
 			Error = result;
 		}

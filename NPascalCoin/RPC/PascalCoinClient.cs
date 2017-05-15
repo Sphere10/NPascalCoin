@@ -140,7 +140,7 @@ namespace NPascalCoin.RPC {
 				["target"] = target,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payloadMethod"] = payloadMethod,
+				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
 		}
@@ -151,7 +151,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
-				["payloadMethod"] = payloadMethod,
+				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
 		}
@@ -162,7 +162,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
-				["payloadMethod"] = payloadMethod,
+				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
 		}
@@ -179,7 +179,7 @@ namespace NPascalCoin.RPC {
 				["last_n_operation"] = last_n_operation,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payloadMethod"] = payloadMethod,
+				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
 		}
@@ -194,7 +194,7 @@ namespace NPascalCoin.RPC {
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payloadMethod"] = payloadMethod,
+				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
 		}
@@ -233,7 +233,7 @@ namespace NPascalCoin.RPC {
 		public string PayloadEncrypt(string payload, PayloadMethod payload_method, string pwd) {
 			return Invoke<string>(ApiMethodName.payloadencrypt.ToString(), new Dictionary<string, object>() {
 				["payload"] = payload,
-				["payload_method"] = payload_method,
+				["payload_method"] = ToPayloadMethodString(payload_method),
 				["pwd"] = pwd
 			});
 		}
@@ -363,6 +363,25 @@ namespace NPascalCoin.RPC {
 			}
 		}
 
+
+		protected string ToPayloadMethodString(PayloadMethod? payload) {
+			return payload != null ? ToPayloadMethodString(payload.Value) : null;
+		}
+
+		protected string ToPayloadMethodString(PayloadMethod payload) {
+			switch (payload) {
+				case PayloadMethod.None:
+					return "none";
+				case PayloadMethod.Dest:
+					return "dest";
+				case PayloadMethod.Sender:
+					return "sender";
+				case PayloadMethod.Aes:
+					return "aes";
+				default:
+					throw new ArgumentOutOfRangeException(nameof(payload), payload, null);
+			}
+		}
 		protected class CallScope : IDisposable {
 			private readonly PascalCoinClient _client;
 			public readonly int CallID;
