@@ -142,10 +142,11 @@ namespace NPascalCoin {
 		/// <param name="target">Destination account</param>
 		/// <param name="amount">Coins to be transferred</param>
 		/// <param name="fee">Fee of the operation</param>
+		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
 		/// <param name="payloadMethod">Payload "item" that will be included in this operation</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If transaction is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
 
 
 		/// <summary>
@@ -160,7 +161,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		OperationDTO ChangeKey(uint account, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO ChangeKey(uint account, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
 
 
 		/// <summary>
@@ -174,7 +175,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Array with Operation object items for each key If operation cannot be made, a JSON-RPC error message is returned</returns>
-		OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
 
 
 		/// <summary>
@@ -189,14 +190,15 @@ namespace NPascalCoin {
 		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
 		/// <param name="amount">Coins to be transferred</param>
 		/// <param name="fee">Fee of the operation</param>
-		/// <param name="payloadMethod">Payload "item" that will be included in this operation</param>
+		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Wallet must be unlocked and sender private key (searched with provided public key) must be in wallet. No other checks are made (no checks for valid target, valid n_operation, valid amount or fee ...)</remarks>
 		/// <remarks>Only one of sender_enc_pubkey, sender_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of target_enc_pubkey, target_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null);
+		RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null);
 
 
 		/// <summary>
@@ -209,14 +211,15 @@ namespace NPascalCoin {
 		/// <param name="new_b58_pubkey">HEXASTRING - Public key of the new key for the account in base58 format</param>
 		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
 		/// <param name="fee">Fee of the operation</param>
-		/// <param name="payloadMethod">Payload "item" that will be included in this operation</param>
+		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Wallet must be unlocked and private key (searched with provided public key) must be in wallet. No other checks are made (no checks for valid n_operation, valid fee ...) </remarks>
 		/// <remarks>Only one of old_enc_pubkey, old_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of new_enc_pubkey, new_b58_pubkey needs be provided</remarks>
 		/// <returns>Wallet must be unlocked and private key (searched with provided public key) must be in wallet. No other checks are made (no checks for valid n_operation, valid fee ...) Returns a Raw Operations Object</returns>
-		RawOperationDTO SignChangeKey(uint account, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null);
+		RawOperationDTO SignChangeKey(uint account, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, string payload = null, PayloadMethod ? payloadMethod = null, string pwd = null, string rawoperations = null);
 
 		/// <summary>
 		/// Returns information stored in a rawoperations param (obtained calling signchangekey or signsendto)

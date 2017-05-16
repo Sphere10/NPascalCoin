@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 using NPascalCoin.DTO;
 
 namespace NPascalCoin.RPC {
-	public class PascalCoinRPCException : ApplicationException {
+	public class PascalCoinRPCException : PascalCoinException {
 
 		public PascalCoinRPCException(string error) : base(error)  {			
 		}

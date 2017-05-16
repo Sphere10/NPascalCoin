@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NPascalCoin {
 	public static class AccountHelper {
-
+		
 		public static string ToAccountString(uint accountNo) {
 			return $"{accountNo}-{CalculateAccountChecksum(accountNo)}";
 		}
@@ -23,5 +23,34 @@ namespace NPascalCoin {
 		public static bool IsMatured(uint account, uint blockHeight) {
 			return account <= MaxMaturedAccount(blockHeight);
 		}
+
+		public static uint ParseAccount(string accountString) {
+			uint account;
+			if (!TryParseAccount(accountString, out account)) {
+				throw new PascalCoinException($"Invalid account string '{accountString}'");
+			}
+			return account;
+		}
+
+		public static bool TryParseAccount(string accountString, out uint account) {
+			account = 0;
+			accountString = accountString.Trim();
+			var splits = accountString.Split('-');
+			if (splits.Length != 2) {
+				return false;
+			}
+
+			if (!uint.TryParse(splits[0], out account)) {
+				return false;
+			}
+
+			uint checksum;
+			if (!uint.TryParse(splits[1], out checksum)) {
+				return false;
+			}
+
+			return checksum == CalculateAccountChecksum(account);
+		}
+
 	}
 }

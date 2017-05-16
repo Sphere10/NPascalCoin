@@ -134,40 +134,43 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.sendto.ToString(), new Dictionary<string, object>() {
 				["sender"] = sender,
 				["target"] = target,
 				["amount"] = amount,
 				["fee"] = fee,
+				["payload"] = payload,
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
 		}
 
-		public OperationDTO ChangeKey(uint account, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public OperationDTO ChangeKey(uint account, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.changekey.ToString(), new Dictionary<string, object>() {
 				["account"] = account,
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
+				["payload"] = payload,
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
 		}
 
-		public OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO[]>(ApiMethodName.changekeys.ToString(), new Dictionary<string, object>() {
 				["accounts"] = accounts,
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
+				["payload"] = payload,
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
 		}
 
-		public RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signsendto.ToString(), new Dictionary<string, object>() {
 				["rawoperations"] = rawoperations,
 				["sender"] = sender,
@@ -179,12 +182,13 @@ namespace NPascalCoin.RPC {
 				["last_n_operation"] = last_n_operation,
 				["amount"] = amount,
 				["fee"] = fee,
+				["payload"] = payload,
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
 		}
 
-		public RawOperationDTO SignChangeKey(uint account, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public RawOperationDTO SignChangeKey(uint account, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signchangekey.ToString(), new Dictionary<string, object>() {
 				["rawoperations"] = rawoperations,
 				["account"] = account,
@@ -194,6 +198,7 @@ namespace NPascalCoin.RPC {
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
+				["payload"] = payload,
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});

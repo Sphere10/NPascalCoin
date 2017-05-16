@@ -62,9 +62,12 @@
     <Compile Include="DTO\AccountDTO.cs" />
     <Compile Include="Enums\KeyType.cs" />
     <Compile Include="Enums\OperationType.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\NumericExtensions.cs" />
     <Compile Include="Extensions\PascalCoinClientExtensions.cs" />
+    <Compile Include="Helpers\OperationHelper.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
+    <Compile Include="PascalCoinException.cs" />
     <Compile Include="RPC\ApiMethodName.cs" />
     <Compile Include="RPC\UnlockWalletScope.cs" />
     <Compile Include="RPC\PascalCoinClientConfiguration.cs" />
