@@ -11,7 +11,7 @@ namespace NPascalCoin {
 			return AccountHelper.ParseAccount(accountString);
 		}
 
-		public static byte[] FromHexStringToByteArray(this string hex) {
+		public static byte[] ToByteArray(this string hex) {
 			if (string.IsNullOrEmpty(hex))
 				return new byte[0];
 

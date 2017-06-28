@@ -153,7 +153,7 @@ namespace NPascalCoin.RPC {
 				["new_name"] = new_name,
 				["new_type"] = new_type,
 				["fee"] = fee,
-				["payload"] = payload?.ToHexString(true),
+				["payload"] = payload?.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
@@ -165,7 +165,7 @@ namespace NPascalCoin.RPC {
 				["target"] = target,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payload"] = payload?.ToHexString(true),
+				["payload"] = payload?.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
@@ -178,7 +178,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd
 			});
@@ -190,7 +190,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
@@ -206,7 +206,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["locked_until_block"] = locked_until_block,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
@@ -217,7 +217,7 @@ namespace NPascalCoin.RPC {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
@@ -233,7 +233,7 @@ namespace NPascalCoin.RPC {
 				["new_enc_pubkey"] = new_enc_pubkey,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 			});
@@ -249,7 +249,7 @@ namespace NPascalCoin.RPC {
 				["new_type"] = new_type,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payload"] = payload?.ToHexString(true),
+				["payload"] = payload?.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["signer_b58_pubkey"] = signer_b58_pubkey,
@@ -269,7 +269,7 @@ namespace NPascalCoin.RPC {
 				["last_n_operation"] = last_n_operation,
 				["amount"] = amount,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["rawoperations"] = rawoperations,
@@ -286,7 +286,7 @@ namespace NPascalCoin.RPC {
 				["new_b58_pubkey"] = new_b58_pubkey,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["rawoperations"] = rawoperations,
@@ -304,7 +304,7 @@ namespace NPascalCoin.RPC {
 				["locked_until_block"] = locked_until_block,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["signer_b58_pubkey"] = signer_b58_pubkey,
@@ -319,7 +319,7 @@ namespace NPascalCoin.RPC {
 				["account_signer"] = account_signer,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["signer_b58_pubkey"] = signer_b58_pubkey,
@@ -339,7 +339,7 @@ namespace NPascalCoin.RPC {
 				["amount"] = amount,
 				["last_n_operation"] = last_n_operation,
 				["fee"] = fee,
-				["payload"] = payload.ToHexString(true),
+				["payload"] = payload.ToHexString(),
 				["payloadMethod"] = ToPayloadMethodString(payloadMethod),
 				["pwd"] = pwd,
 				["signer_b58_pubkey"] = signer_b58_pubkey,
