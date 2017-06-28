@@ -45,6 +45,19 @@ namespace NPascalCoin {
 		}
 
 		/// <summary>
+		/// Find accounts by name/type and returns them as an array of Account objects
+		/// </summary>
+		/// <param name="name">If has value, will return the account that match name</param>
+		/// <param name="type">If has value, will return accounts with same type</param>
+		/// <param name="status">If has value, will filter account with status as follows: 0 = all accounts, 1 = accounts for public or private sale only, 2 = accounts for private sale only, 3 = accounts for public sale only</param>
+		/// <param name="start">Start account (by default, 0)</param>
+		/// <param name="max">Max of accounts returned in array (by default, 100)</param>
+		/// <returns></returns>
+		public static Task<AccountDTO[]> FindAccountsAsync(this IPascalCoinClient client, string name, uint? type = null, uint? status = null, uint? start = null, uint? max = null) { 
+			return Task.Run(() => client.FindAccounts(name, type, status, start, max));
+		}
+
+		/// <summary>
 		/// Returns a JSON array with all wallet accounts.
 		/// </summary>
 		/// <param name="enc_pubkey">HEXASTRING (optional). If provided, return only accounts of this public key</param>
@@ -78,7 +91,6 @@ namespace NPascalCoin {
 		public static Task<PublicKeyDTO> GetWalletPubKeyAsync(this IPascalCoinClient client, string enc_pubkey = null, string b58_pubkey = null) {
 			return Task.Run(() => client.GetWalletPubKey(enc_pubkey, b58_pubkey));
 		}
-
 
 		/// <summary>
 		/// Returns a JSON Array with all pubkeys of the Wallet (address)
@@ -179,6 +191,24 @@ namespace NPascalCoin {
 			return Task.Run(() => client.FindOperation(ophash));
 		}
 
+		/// <summary>
+		/// Changes an account Public key, or name, or type value (at least 1 on 3)
+		/// </summary>
+		/// <param name="account_target">Account being changed</param>
+		/// <param name="account_signer">Account paying the fee (must have same public key as account_target)</param>
+		/// <param name="new_enc_pubkey">New account public key encoded in hexadecimal format</param>
+		/// <param name="new_b58_pubkey">New account public key encoded in base58 format</param>
+		/// <param name="new_name">New account name encoded in PascalCoin64 format (null means keep current name)</param>
+		/// <param name="new_type">New account type (null means keep current type)</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
+		public static Task<OperationDTO> ChangeAccountInfoAsync(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+			return Task.Run(() => client.ChangeAccountInfo(account_target, account_signer, new_enc_pubkey, new_b58_pubkey, new_name, new_type, fee, payload, payloadMethod, pwd));
+		}
 
 		/// <summary>
 		/// Executes a transaction operation from "sender" to "target"
@@ -187,11 +217,11 @@ namespace NPascalCoin {
 		/// <param name="target">Destination account</param>
 		/// <param name="amount">Coins to be transferred</param>
 		/// <param name="fee">Fee of the operation</param>
-		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If transaction is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		public static Task<OperationDTO> SendToAsync(this IPascalCoinClient client, uint sender, uint target, decimal amount, decimal fee, string payload = null, PayloadMethod ? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> SendToAsync(this IPascalCoinClient client, uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadMethod ? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.SendTo(sender, target, amount, fee, payload, payloadMethod, pwd));
 		}
 
@@ -200,17 +230,17 @@ namespace NPascalCoin {
 		/// </summary>
 		/// <remarks>Note that new one public key can be another Wallet public key, or none.When none, it's like a transaction, tranferring account owner to an external owner</remarks>
 		/// <param name="account">Account number to change key</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that delisted account, or be the same)</param>
 		/// <param name="new_enc_pubkey">HEXASTRING - New public key in encoded format</param>
 		/// <param name="new_b58_pubkey">New public key in Base 58 format (the same that Application Wallet exports)</param>
 		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
-		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		public static Task<OperationDTO> ChangeKeyAsync(this IPascalCoinClient client, uint account, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
-			return Task.Run(() => client.ChangeKey(account, new_enc_pubkey, new_b58_pubkey, fee, payload, payloadMethod, pwd));
+		public static Task<OperationDTO> ChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+			return Task.Run(() => client.ChangeKey(account, account_signer, new_enc_pubkey, new_b58_pubkey, fee, payload, payloadMethod, pwd));
 		}
-
 
 		/// <summary>
 		/// Executes a change key operation, changing "account" public key for a new one, in multiple accounts Works like changekey
@@ -219,14 +249,89 @@ namespace NPascalCoin {
 		/// <param name="new_enc_pubkey">HEXASTRING - New public key in encoded format</param>
 		/// <param name="new_b58_pubkey">New public key in Base 58 format (the same that Application Wallet exports)</param>
 		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
-		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Array with Operation object items for each key If operation cannot be made, a JSON-RPC error message is returned</returns>
-		public static Task<OperationDTO[]> ChangeKeysAsync(this IPascalCoinClient client, string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO[]> ChangeKeysAsync(this IPascalCoinClient client, string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.ChangeKeys(accounts, new_enc_pubkey, new_b58_pubkey, fee, payload, payloadMethod, pwd));
 		}
 
+		/// <summary>
+		/// Lists an account for sale (public or private)
+		/// </summary>
+		/// <param name="account_target">Account to be listed</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that listed account, or be the same)</param>
+		/// <param name="price">price account can be purchased for</param>
+		/// <param name="seller_account">Account that will receive "price" amount on sell</param>
+		/// <param name="new_b58_pubkey">Base58 encoded public key (for private sale only)</param>
+		/// <param name="new_enc_pubkey">Hex-encoded public key (for private sale only)</param>
+		/// <param name="locked_until_block">Block number until this account will be locked (a locked account cannot execute operations while locked)</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
+		public static Task<OperationDTO> ListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+			return Task.Run(() => client.ListAccountForSale(account_target, account_signer, price, seller_account, new_b58_pubkey, new_enc_pubkey, locked_until_block, fee, payload, payloadMethod, pwd));
+		}
+
+		/// <summary>
+		///  Delist an account from sale.
+		/// </summary>
+		/// <param name="account_target">Account to be delisted</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that delisted account, or be the same)</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
+		public static Task<OperationDTO> DelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+			return Task.Run(() => client.DelistAccountForSale(account_target, account_signer, fee, payload, payloadMethod, pwd));
+		}
+
+		/// <summary>
+		/// Buy an account currently listed for sale (public or private)
+		/// </summary>
+		/// <param name="buyer_account">Account number of buyer who is purchasing the account</param>
+		/// <param name="account_to_purchase">Account number being purchased</param>
+		/// <param name="price">Settlement price of account being purchased</param>
+		/// <param name="seller_account">Account of seller, receiving payment</param>
+		/// <param name="new_b58_pubkey">Post-settlement public key in base58 encoded format.</param>
+		/// <param name="new_enc_pubkey">Post-settlement public key in hexadecimal encoded format.</param>
+		/// <param name="amount">Amount being transferred from buyer_account to seller_account (the settlement). This is a PASCURRENCY value.</param>
+		/// <param name="fee">Fee of the operation. This is a PASCURRENCY value.</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
+		public static Task<OperationDTO> BuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+			return Task.Run(() => client.BuyAccount(buyer_account, account_to_purchase, price, seller_account, new_b58_pubkey, new_enc_pubkey, amount, fee, payload, payloadMethod, pwd));
+		}
+
+		/// <summary>
+		/// Signs a "Change Account Info" operation, suitable for cold wallet usage.
+		/// </summary>
+		/// <param name="account_target">Account being changed</param>
+		/// <param name="account_signer">Account paying the fee (must have same public key as account_target)</param>
+		/// <param name="new_enc_pubkey">New account public key encoded in hexadecimal format</param>
+		/// <param name="new_b58_pubkey">New account public key encoded in base58 format</param>
+		/// <param name="new_name">New account name encoded in PascalCoin64 format (null means keep current name)</param>
+		/// <param name="new_type">New account type (null means keep current type)</param>
+		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <param name="signer_b58_pubkey">The current public key of "account_signer" in base58 encoding</param> 
+		/// <param name="signer_enc_pubkey">The current public key of "account_signer" in hexadecimal encoding</param> 
+		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
+		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>Returns a Raw Operations Object</returns>
+		public static Task<OperationDTO> SignChangeAccountInfo(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+			return Task.Run(() => client.ChangeAccountInfo(account_target, account_signer, new_enc_pubkey, new_b58_pubkey, new_name, new_type, fee, payload, payloadMethod, pwd));
+		}
 
 		/// <summary>
 		/// Creates and signs a "Send to" operation without checking information and without transfering to the network. It's usefull for "cold wallets" that are off-line (not synchronized with the network) and only holds private keys
@@ -240,7 +345,7 @@ namespace NPascalCoin {
 		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
 		/// <param name="amount">Coins to be transferred</param>
 		/// <param name="fee">Fee of the operation</param>
-		/// <param name="payload">HEXASTRING - Payload "item" that will be included in this operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
@@ -248,31 +353,102 @@ namespace NPascalCoin {
 		/// <remarks>Only one of sender_enc_pubkey, sender_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of target_enc_pubkey, target_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignSendToAsync(this IPascalCoinClient client, uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignSendToAsync(this IPascalCoinClient client, uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Task.Run(() => client.SignSendTo(sender, target, sender_enc_pubkey, sender_b58_pubkey, target_enc_pubkey, target_b58_pubkey, last_n_operation, amount, fee, payload, payloadMethod, pwd, rawoperations));
 		}
 
-
 		/// <summary>
-		/// Creates and signs a "Change key" operation without checking information and without transfering to the network. It's usefull for "cold wallets" that are off-line (not synchronized with the network) and only holds private keys
+		/// Creates and signs a "Change key" operation without checking information and without transfering to the network. It's useful for "cold wallets" that are off-line (not synchronized with the network) and only holds private keys
 		/// </summary>
 		/// <param name="account">Account number to change key</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that delisted account, or be the same)</param>
 		/// <param name="old_enc_pubkey">HEXASTRING - Public key of the account in encoded format</param>
 		/// <param name="old_b58_pubkey">HEXASTRING - Public key of the account in base58 format</param>
 		/// <param name="new_enc_pubkey">HEXASTRING - Public key of the new key for the account in encoded format</param>
 		/// <param name="new_b58_pubkey">HEXASTRING - Public key of the new key for the account in base58 format</param>
 		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
 		/// <param name="fee">Fee of the operation</param>
-		/// <param name="payloadMethod">Payload "item" that will be included in this operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Wallet must be unlocked and private key (searched with provided public key) must be in wallet. No other checks are made (no checks for valid n_operation, valid fee ...) </remarks>
 		/// <remarks>Only one of old_enc_pubkey, old_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of new_enc_pubkey, new_b58_pubkey needs be provided</remarks>
-		/// <returns>Wallet must be unlocked and private key (searched with provided public key) must be in wallet. No other checks are made (no checks for valid n_operation, valid fee ...) Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignChangeKeyAsync(this IPascalCoinClient client, uint account, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, string payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
-			return Task.Run(() => client.SignChangeKey(account, old_enc_pubkey, old_b58_pubkey, new_enc_pubkey, new_b58_pubkey, last_n_operation, fee, payload, payloadMethod, pwd, rawoperations));
+		/// <returns>Returns a Raw Operations Object</returns>
+		public static Task<RawOperationDTO> SignChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+			return Task.Run(() => client.SignChangeKey(account, account_signer, old_enc_pubkey, old_b58_pubkey, new_enc_pubkey, new_b58_pubkey, last_n_operation, fee, payload, payloadMethod, pwd, rawoperations));
 		}
+
+		/// <summary>
+		/// Signs a "List Account For Sale" operation. 
+		/// </summary>
+		/// <param name="account_target">Account to be listed</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that listed account, or be the same)</param>
+		/// <param name="price">price account can be purchased for</param>
+		/// <param name="seller_account">Account that will receive "price" amount on sell</param>
+		/// <param name="new_b58_pubkey">Base58 encoded public key (for private sale only)</param>
+		/// <param name="new_enc_pubkey">Hex-encoded public key (for private sale only)</param>
+		/// <param name="locked_until_block">Block number until this account will be locked (a locked account cannot execute operations while locked)</param>
+		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <param name="signer_b58_pubkey">The current public key of "account_signer" in base58 encoding</param> 
+		/// <param name="signer_enc_pubkey">The current public key of "account_signer" in hexadecimal encoding</param> 
+		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
+		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>Returns a Raw Operations Object</returns>
+		public static Task<RawOperationDTO> SignListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+			return Task.Run(() => client.SignListAccountForSale(account_target, account_signer, price, seller_account, new_b58_pubkey, new_enc_pubkey, locked_until_block, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
+		}
+
+		/// <summary>
+		/// Signs a "Delist Account For Sale" operation, suitable for cold wallet usage.
+		/// </summary>
+		/// <param name="account_target">Account to be delisted</param>
+		/// <param name="account_signer">Account that signs and pays the fee (must have same public key that delisted account, or be the same)</param>
+		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
+		/// <param name="fee">PASCURRENCY - Fee of the operation</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <param name="signer_b58_pubkey">The current public key of "account_signer" in base58 encoding</param> 
+		/// <param name="signer_enc_pubkey">The current public key of "account_signer" in hexadecimal encoding</param> 
+		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
+		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>Returns a Raw Operations Object</returns>
+		public static Task<RawOperationDTO> SignDelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+			return Task.Run(() => client.SignDelistAccountForSale(account_target, account_signer, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
+		}
+
+		/// <summary>
+		/// Signs a "Buy Account" operation, suitable for cold wallet usage.
+		/// </summary>
+		/// <param name="buyer_account">Account number of buyer who is purchasing the account</param>
+		/// <param name="account_to_purchase">Account number being purchased</param>
+		/// <param name="price">Settlement price of account being purchased</param>
+		/// <param name="seller_account">Account of seller, receiving payment</param>
+		/// <param name="new_b58_pubkey">Post-settlement public key in base58 encoded format.</param>
+		/// <param name="new_enc_pubkey">Post-settlement public key in hexadecimal encoded format.</param>
+		/// <param name="amount">Amount being transferred from buyer_account to seller_account (the settlement). This is a PASCURRENCY value.</param>
+		/// <param name="last_n_operation">Last value of n_operation obtained with an Account object, for example when called to getaccount</param>
+		/// <param name="fee">Fee of the operation. This is a PASCURRENCY value.</param>
+		/// <param name="payload">Payload "item" that will be included in this operation</param>
+		/// <param name="payloadMethod">Encode type of the item payload</param>
+		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
+		/// <param name="signer_b58_pubkey">The current public key of "account_signer" in base58 encoding</param> 
+		/// <param name="signer_enc_pubkey">The current public key of "account_signer" in hexadecimal encoding</param> 
+		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
+		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
+		/// <returns>Returns a Raw Operations Object</returns>
+		public static Task<RawOperationDTO> SignBuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+			return Task.Run(() => client.SignBuyAccount(buyer_account, account_to_purchase, price, seller_account, new_b58_pubkey, new_enc_pubkey, amount, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
+		}
+
 
 		/// <summary>
 		/// Returns information stored in a rawoperations param (obtained calling signchangekey or signsendto)
@@ -293,7 +469,6 @@ namespace NPascalCoin {
 			return Task.Run(() => client.ExecuteOperations(rawoperations));
 		}
 
-
 		/// <summary>
 		/// Returns information of the Node in a JSON Object
 		/// </summary>
@@ -301,7 +476,6 @@ namespace NPascalCoin {
 		public static Task<NodeStatusDTO> NodeStatusAsync(this IPascalCoinClient client) {
 			return Task.Run(() => client.NodeStatus());
 		}
-
 
 		/// <summary>
 		/// Encodes a public key based on params information
@@ -314,7 +488,6 @@ namespace NPascalCoin {
 			return Task.Run(() => client.EncodePubKey(ec_nid, x, y));
 		}
 
-
 		/// <summary>
 		/// Decodes an encoded public key
 		/// </summary>
@@ -326,7 +499,6 @@ namespace NPascalCoin {
 			return Task.Run(() => client.DecodePubKey(enc_pubkey, b58_pubkey));
 		}
 
-
 		/// <summary>
 		/// Encrypt a text "paylad" using "payload_method"
 		/// </summary>
@@ -337,7 +509,6 @@ namespace NPascalCoin {
 		public static Task<string> PayloadEncryptAsync(this IPascalCoinClient client, string payload, PayloadMethod payload_method, string pwd) {
 			return Task.Run(() => client.PayloadEncrypt(payload, payload_method, pwd));
 		}
-
 
 		/// <summary>
 		/// Returns a HEXASTRING with decrypted text (a payload) using private keys in the wallet or a list of Passwords (used in "aes" encryption)
@@ -358,7 +529,6 @@ namespace NPascalCoin {
 		public static Task<ConnectionDTO[]> GetConnectionsAsync(this IPascalCoinClient client) {
 			return Task.Run(() => client.GetConnections());
 		}
-
 
 		/// <summary>
 		/// Creates a new Private key and sotres it on the wallet, returning an enc_pubkey value
@@ -386,7 +556,6 @@ namespace NPascalCoin {
 		public static Task<bool> UnlockAsync(this IPascalCoinClient client, string pwd) {
 			return Task.Run(() => client.Unlock(pwd));
 		}
-
 
 		/// <summary>
 		/// Changes the password of the Wallet. (Must be previously unlocked) Note: If pwd param is empty string, then wallet will be not protected by password

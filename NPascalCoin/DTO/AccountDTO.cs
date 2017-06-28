@@ -20,6 +20,41 @@ namespace NPascalCoin.DTO {
 		public uint Account { get; set; }
 
 		/// <summary>
+		/// Account Type
+		/// </summary>
+		[JsonProperty("type")]
+		public ushort Type { get; set; }
+
+		/// <summary>
+		/// Account name in PascalCoin64 Encoding - abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-+{}[]_:"|&lt;>,.?/~
+		/// </summary>
+		/// <remarks>First char cannot start with number</remarks>
+		/// <remarks>Must empty/null or 3..64 characters in length</remarks>
+		[JsonProperty("name")]
+		public string Name { get; set; }
+	
+		/// <summary>
+		/// Account State 
+		/// </summary>
+		[JsonProperty("state")]
+		public AccountState State { get; set; }
+
+		/// <summary>
+		/// For Listed accounts, this indicates whether it's private or public sale
+		/// </summary>
+		[JsonProperty("private_sale")]
+		public bool? PrivateSale { get; set; }
+
+		/// <summary>
+		/// For Listed accounts for PrivateSale, this indicates the buyers public key
+		/// </summary>
+		[JsonProperty("new_enc_pubkey")]
+		public string NewEncPubkey { get; set; }
+
+		[JsonProperty("locked_until_block")]
+		public uint? LockedUntilBlock { get; set; }
+
+		/// <summary>
 		/// Encoded public key value (hexastring)
 		/// </summary>
 		[JsonProperty("enc_pubkey")]

@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PROTOCOL_V2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -47,6 +47,8 @@
     <Compile Include="DTO\PascalCoinDTO.cs" />
     <Compile Include="DTO\DecryptedPayloadDTO.cs" />
     <Compile Include="DTO\NodeServerDTO.cs" />
+    <Compile Include="Enums\AccountState.cs" />
+    <Compile Include="Enums\OperationSubType.cs" />
     <Compile Include="Enums\PascalCoinNetwork.cs" />
     <Compile Include="DTO\NetStatsDTO.cs" />
     <Compile Include="DTO\NetProtocolDTO.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="DTO\AccountDTO.cs" />
     <Compile Include="Enums\KeyType.cs" />
     <Compile Include="Enums\OperationType.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\NumericExtensions.cs" />
     <Compile Include="Extensions\PascalCoinClientExtensions.cs" />

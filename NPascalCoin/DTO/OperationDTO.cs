@@ -14,6 +14,13 @@ namespace NPascalCoin.DTO {
 	public class OperationDTO : PascalCoinDTO {
 
 		/// <summary>
+		/// Operation hash used to find this operation in the blockchain. (HEXASTRING).
+		/// </summary>
+		[JsonProperty("ophash")]
+		public string Ophash { get; set; }
+
+
+		/// <summary>
 		/// If operation is invalid, value=false  (optional)
 		/// </summary>
 		[JsonProperty("valid")]
@@ -58,6 +65,13 @@ namespace NPascalCoin.DTO {
 		/// </summary>
 		[JsonProperty("optype")]
 		public OperationType Type { get; set; }
+
+
+		/// <summary>
+		/// Operation sub-type.
+		/// </summary>
+		[JsonProperty("subtype")]
+		public OperationSubType SubType { get; set; }
 
 		/// <summary>
 		/// Account affected by this operation.Note: A transaction has 2 affected accounts.
@@ -105,18 +119,29 @@ namespace NPascalCoin.DTO {
 		public uint DestAccount { get; set; }
 
 		/// <summary>
-		/// Encoded public key in a change key operation(optype = 2). (HEXASTRING). See decodepubkey.
+		/// Account that signed operation, and pays network fee.
 		/// </summary>
+		[JsonProperty("signer_account")]
+		public uint SignerAccount { get; set; }
+
+		/// <summary>
+		/// Encoded public key used in either a change key operation (optype = 2) or a list account for sale (privat sale)operation. (HEXASTRING).
+		/// </summary>
+		/// <remarks>See decodepubkey to deconstruct datatype.</remarks>
 		[JsonProperty("enc_pubkey")]
 		public string EncPubKey { get; set; }
 
 		/// <summary>
-		/// Operation hash used to find this operation in the blockchain. (HEXASTRING).
+		/// Operation payload in hex format
 		/// </summary>
-		[JsonProperty("ophash")]
-		public string Ophash { get; set; }
-
 		[JsonProperty("payload")]
-		public string PayLoad { get; set; }
-	}	
+		public byte[] PayLoad { get; set; }
+
+		/// <summary>
+		/// Operation hash calculated using V1 algorithm. Only provided for operations before V2 activation. (HEXASTRING).
+		/// </summary>
+		[JsonProperty("old_ophash")]
+		public string V1_Ophash { get; set; }
+
+	}
 }
