@@ -135,6 +135,7 @@ namespace NPascalCoin.DTO {
 		/// Operation payload in hex format
 		/// </summary>
 		[JsonProperty("payload")]
+		[JsonConverter(typeof(HexBinaryConverter))]
 		public byte[] PayLoad { get; set; }
 
 		/// <summary>
