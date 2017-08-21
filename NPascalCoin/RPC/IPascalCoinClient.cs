@@ -159,7 +159,7 @@ namespace NPascalCoin {
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		OperationDTO ChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO ChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Executes a transaction operation from "sender" to "target"
@@ -172,7 +172,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Payload "item" that will be included in this operation</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If transaction is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Executes a change key operation, changing "account" public key for a new one.
@@ -188,7 +188,7 @@ namespace NPascalCoin {
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		OperationDTO ChangeKey(uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO ChangeKey(uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Executes a change key operation, changing "account" public key for a new one, in multiple accounts Works like changekey
@@ -201,7 +201,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Array with Operation object items for each key If operation cannot be made, a JSON-RPC error message is returned</returns>
-		OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Lists an account for sale (public or private)
@@ -219,7 +219,7 @@ namespace NPascalCoin {
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		OperationDTO ListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO ListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		///  Delist an account from sale.
@@ -231,7 +231,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		OperationDTO DelistAccountForSale(uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO DelistAccountForSale(uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Buy an account currently listed for sale (public or private)
@@ -248,7 +248,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		OperationDTO BuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null);
+		OperationDTO BuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null);
 
 		/// <summary>
 		/// Signs a "Change Account Info" operation, suitable for cold wallet usage.
@@ -269,7 +269,7 @@ namespace NPascalCoin {
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		OperationDTO SignChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
+		OperationDTO SignChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
 
 		/// <summary>
 		/// Creates and signs a "Send to" operation without checking information and without transfering to the network. It's useful for "cold wallets" that are off-line (not synchronized with the network) and only holds private keys
@@ -291,7 +291,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one of sender_enc_pubkey, sender_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of target_enc_pubkey, target_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null);
+		RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string rawoperations = null);
 
 		/// <summary>
 		/// Creates and signs a "Change key" operation without checking information and without transfering to the network. It's useful for "cold wallets" that are off-line (not synchronized with the network) and only holds private keys
@@ -312,7 +312,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one of old_enc_pubkey, old_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of new_enc_pubkey, new_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignChangeKey(uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod ? payloadMethod = null, string pwd = null, string rawoperations = null);
+		RawOperationDTO SignChangeKey(uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod ? payloadMethod = null, string pwd = null, string rawoperations = null);
 
 		/// <summary>
 		/// Signs a "List Account For Sale" operation. 
@@ -335,7 +335,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
+		RawOperationDTO SignListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
 
 		/// <summary>
 		/// Signs a "Delist Account For Sale" operation, suitable for cold wallet usage.
@@ -352,7 +352,7 @@ namespace NPascalCoin {
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignDelistAccountForSale(uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
+		RawOperationDTO SignDelistAccountForSale(uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
 
 		/// <summary>
 		/// Signs a "Buy Account" operation, suitable for cold wallet usage.
@@ -375,7 +375,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		RawOperationDTO SignBuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
+		RawOperationDTO SignBuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null);
 
 		/// <summary>
 		/// Returns information stored in a rawoperations param (obtained calling signchangekey or signsendto)
@@ -423,7 +423,7 @@ namespace NPascalCoin {
 		/// <param name="payload_method">Payload method</param>
 		/// <param name="pwd">Using a Password. Must provide pwd param</param>
 		/// <returns>Returns a HEXASTRING with encrypted payload</returns>
-		string PayloadEncrypt(string payload, PayloadMethod payload_method, string pwd);
+		string PayloadEncrypt(string payload, PayloadEncryptionMethod payload_method, string pwd);
 
 		/// <summary>
 		/// Returns a HEXASTRING with decrypted text (a payload) using private keys in the wallet or a list of Passwords (used in "aes" encryption)

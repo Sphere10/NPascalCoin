@@ -55,7 +55,7 @@
     <Compile Include="DTO\NodeStatusDTO.cs" />
     <Compile Include="DTO\ErrorResultDTO.cs" />
     <Compile Include="Enums\DecryptedPayloadMethod.cs" />
-    <Compile Include="Enums\PayloadMethod.cs" />
+    <Compile Include="Enums\PayloadEncryptionMethod.cs" />
     <Compile Include="DTO\RawOperationDTO.cs" />
     <Compile Include="DTO\PublicKeyDTO.cs" />
     <Compile Include="DTO\ConnectionDTO.cs" />
@@ -86,6 +86,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,7 +11,7 @@ namespace NPascalCoin {
 	/// <summary>
 	/// Type of payload encoded.
 	/// </summary>
-	public enum PayloadMethod {
+	public enum PayloadEncryptionMethod {
 
 		/// <summary>
 		/// Not encoded. Will be visible for everybody

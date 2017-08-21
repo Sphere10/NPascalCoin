@@ -144,7 +144,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO ChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO ChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.changeaccountinfo.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -159,7 +159,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO SendTo(uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.sendto.ToString(), new Dictionary<string, object>() {
 				["sender"] = sender,
 				["target"] = target,
@@ -171,7 +171,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO ChangeKey(uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO ChangeKey(uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.changekey.ToString(), new Dictionary<string, object>() {
 				["account"] = account,
 				["account_signer"] = account_signer,
@@ -184,7 +184,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO[] ChangeKeys(string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO[]>(ApiMethodName.changekeys.ToString(), new Dictionary<string, object>() {
 				["accounts"] = accounts,
 				["new_enc_pubkey"] = new_enc_pubkey,
@@ -196,7 +196,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO ListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO ListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.listaccountforsale.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -212,7 +212,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO DelistAccountForSale(uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO DelistAccountForSale(uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.delistaccountforsale.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -223,7 +223,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO BuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public virtual OperationDTO BuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Invoke<OperationDTO>(ApiMethodName.buyaccount.ToString(), new Dictionary<string, object>() {
 				["buyer_account"] = buyer_account,
 				["account_to_purchase"] = account_to_purchase,
@@ -239,7 +239,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO SignChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public virtual OperationDTO SignChangeAccountInfo(uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Invoke<OperationDTO>(ApiMethodName.signchangeaccountinfo.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -258,7 +258,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public virtual RawOperationDTO SignSendTo(uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signsendto.ToString(), new Dictionary<string, object>() {				
 				["sender"] = sender,
 				["target"] = target,
@@ -276,7 +276,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual RawOperationDTO SignChangeKey(uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public virtual RawOperationDTO SignChangeKey(uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signchangekey.ToString(), new Dictionary<string, object>() {				
 				["account"] = account,
 				["account_signer"] = account_signer,
@@ -293,7 +293,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual RawOperationDTO SignListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public virtual RawOperationDTO SignListAccountForSale(uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signlistaccountforsale.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -313,7 +313,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual RawOperationDTO SignDelistAccountForSale(uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public virtual RawOperationDTO SignDelistAccountForSale(uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signdelistaccountforsale.ToString(), new Dictionary<string, object>() {
 				["account_target"] = account_target,
 				["account_signer"] = account_signer,
@@ -328,7 +328,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual RawOperationDTO SignBuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public virtual RawOperationDTO SignBuyAccount(uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Invoke<RawOperationDTO>(ApiMethodName.signbuyaccount.ToString(), new Dictionary<string, object>() {
 				["buyer_account"] = buyer_account,
 				["account_to_purchase"] = account_to_purchase,
@@ -379,7 +379,7 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public string PayloadEncrypt(string payload, PayloadMethod payload_method, string pwd) {
+		public string PayloadEncrypt(string payload, PayloadEncryptionMethod payload_method, string pwd) {
 			return Invoke<string>(ApiMethodName.payloadencrypt.ToString(), new Dictionary<string, object>() {
 				["payload"] = payload,
 				["payload_method"] = ToPayloadMethodString(payload_method),
@@ -512,19 +512,19 @@ namespace NPascalCoin.RPC {
 			}
 		}
 
-		protected string ToPayloadMethodString(PayloadMethod? payload) {
+		protected string ToPayloadMethodString(PayloadEncryptionMethod? payload) {
 			return payload != null ? ToPayloadMethodString(payload.Value) : null;
 		}
 
-		protected string ToPayloadMethodString(PayloadMethod payload) {
+		protected string ToPayloadMethodString(PayloadEncryptionMethod payload) {
 			switch (payload) {
-				case PayloadMethod.None:
+				case PayloadEncryptionMethod.None:
 					return "none";
-				case PayloadMethod.Dest:
+				case PayloadEncryptionMethod.Dest:
 					return "dest";
-				case PayloadMethod.Sender:
+				case PayloadEncryptionMethod.Sender:
 					return "sender";
-				case PayloadMethod.Aes:
+				case PayloadEncryptionMethod.Aes:
 					return "aes";
 				default:
 					throw new ArgumentOutOfRangeException(nameof(payload), payload, null);

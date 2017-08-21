@@ -206,7 +206,7 @@ namespace NPascalCoin {
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		public static Task<OperationDTO> ChangeAccountInfoAsync(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> ChangeAccountInfoAsync(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.ChangeAccountInfo(account_target, account_signer, new_enc_pubkey, new_b58_pubkey, new_name, new_type, fee, payload, payloadMethod, pwd));
 		}
 
@@ -221,7 +221,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If transaction is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		public static Task<OperationDTO> SendToAsync(this IPascalCoinClient client, uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadMethod ? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> SendToAsync(this IPascalCoinClient client, uint sender, uint target, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod ? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.SendTo(sender, target, amount, fee, payload, payloadMethod, pwd));
 		}
 
@@ -238,7 +238,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format. Otherwise, will return a JSON-RPC error code with description</returns>
-		public static Task<OperationDTO> ChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> ChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.ChangeKey(account, account_signer, new_enc_pubkey, new_b58_pubkey, fee, payload, payloadMethod, pwd));
 		}
 
@@ -253,7 +253,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Array with Operation object items for each key If operation cannot be made, a JSON-RPC error message is returned</returns>
-		public static Task<OperationDTO[]> ChangeKeysAsync(this IPascalCoinClient client, string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO[]> ChangeKeysAsync(this IPascalCoinClient client, string accounts, string new_enc_pubkey, string new_b58_pubkey, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.ChangeKeys(accounts, new_enc_pubkey, new_b58_pubkey, fee, payload, payloadMethod, pwd));
 		}
 
@@ -273,7 +273,7 @@ namespace NPascalCoin {
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		public static Task<OperationDTO> ListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> ListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.ListAccountForSale(account_target, account_signer, price, seller_account, new_b58_pubkey, new_enc_pubkey, locked_until_block, fee, payload, payloadMethod, pwd));
 		}
 
@@ -287,7 +287,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		public static Task<OperationDTO> DelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> DelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.DelistAccountForSale(account_target, account_signer, fee, payload, payloadMethod, pwd));
 		}
 
@@ -306,7 +306,7 @@ namespace NPascalCoin {
 		/// <param name="payloadMethod">Encode type of the item payload</param>
 		/// <param name="pwd">Used to encrypt payload with aes as a payload_method. If none equals to empty password</param>
 		/// <returns>If operation is successfull will return a JSON Object in "Operation Object" format.</returns>
-		public static Task<OperationDTO> BuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null) {
+		public static Task<OperationDTO> BuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null) {
 			return Task.Run(() => client.BuyAccount(buyer_account, account_to_purchase, price, seller_account, new_b58_pubkey, new_enc_pubkey, amount, fee, payload, payloadMethod, pwd));
 		}
 
@@ -329,7 +329,7 @@ namespace NPascalCoin {
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<OperationDTO> SignChangeAccountInfo(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public static Task<OperationDTO> SignChangeAccountInfo(this IPascalCoinClient client, uint account_target, uint account_signer, string new_enc_pubkey, string new_b58_pubkey, string new_name, ushort? new_type, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Task.Run(() => client.ChangeAccountInfo(account_target, account_signer, new_enc_pubkey, new_b58_pubkey, new_name, new_type, fee, payload, payloadMethod, pwd));
 		}
 
@@ -353,7 +353,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one of sender_enc_pubkey, sender_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of target_enc_pubkey, target_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignSendToAsync(this IPascalCoinClient client, uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignSendToAsync(this IPascalCoinClient client, uint sender, uint target, string sender_enc_pubkey, string sender_b58_pubkey, string target_enc_pubkey, string target_b58_pubkey, uint last_n_operation, decimal amount, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Task.Run(() => client.SignSendTo(sender, target, sender_enc_pubkey, sender_b58_pubkey, target_enc_pubkey, target_b58_pubkey, last_n_operation, amount, fee, payload, payloadMethod, pwd, rawoperations));
 		}
 
@@ -376,7 +376,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one of old_enc_pubkey, old_b58_pubkey needs be provided</remarks>
 		/// <remarks>Only one of new_enc_pubkey, new_b58_pubkey needs be provided</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignChangeKeyAsync(this IPascalCoinClient client, uint account, uint account_signer, string old_enc_pubkey, string old_b58_pubkey, string new_enc_pubkey, string new_b58_pubkey, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string rawoperations = null) {
 			return Task.Run(() => client.SignChangeKey(account, account_signer, old_enc_pubkey, old_b58_pubkey, new_enc_pubkey, new_b58_pubkey, last_n_operation, fee, payload, payloadMethod, pwd, rawoperations));
 		}
 
@@ -401,7 +401,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignListAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, uint locked_until_block, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Task.Run(() => client.SignListAccountForSale(account_target, account_signer, price, seller_account, new_b58_pubkey, new_enc_pubkey, locked_until_block, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
 		}
 
@@ -420,7 +420,7 @@ namespace NPascalCoin {
 		/// <param name="rawoperations">HEXASTRING (optional) - If we want to add a sign operation with other previous operations, here we must put previous rawoperations result</param>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignDelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignDelistAccountForSaleAsync(this IPascalCoinClient client, uint account_target, uint account_signer, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Task.Run(() => client.SignDelistAccountForSale(account_target, account_signer, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
 		}
 
@@ -445,7 +445,7 @@ namespace NPascalCoin {
 		/// <remarks>Only one or none of new_b58_pubkey, new_enc_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <remarks>Only one or none of signer_b58_pubkey, signer_b58_pubkey should be used. Populating both will result in an error.</remarks>
 		/// <returns>Returns a Raw Operations Object</returns>
-		public static Task<RawOperationDTO> SignBuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
+		public static Task<RawOperationDTO> SignBuyAccountAsync(this IPascalCoinClient client, uint buyer_account, uint account_to_purchase, decimal price, uint seller_account, string new_b58_pubkey, string new_enc_pubkey, decimal amount, uint last_n_operation, decimal fee, byte[] payload = null, PayloadEncryptionMethod? payloadMethod = null, string pwd = null, string signer_b58_pubkey = null, string signer_enc_pubkey = null, string rawoperations = null) {
 			return Task.Run(() => client.SignBuyAccount(buyer_account, account_to_purchase, price, seller_account, new_b58_pubkey, new_enc_pubkey, amount, last_n_operation, fee, payload, payloadMethod, pwd, signer_b58_pubkey, signer_enc_pubkey, rawoperations));
 		}
 
@@ -506,7 +506,7 @@ namespace NPascalCoin {
 		/// <param name="payload_method">Payload method</param>
 		/// <param name="pwd">Using a Password. Must provide pwd param</param>
 		/// <returns>Returns a HEXASTRING with encrypted payload</returns>
-		public static Task<string> PayloadEncryptAsync(this IPascalCoinClient client, string payload, PayloadMethod payload_method, string pwd) {
+		public static Task<string> PayloadEncryptAsync(this IPascalCoinClient client, string payload, PayloadEncryptionMethod payload_method, string pwd) {
 			return Task.Run(() => client.PayloadEncrypt(payload, payload_method, pwd));
 		}
 
