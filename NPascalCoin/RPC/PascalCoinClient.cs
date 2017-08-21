@@ -26,7 +26,7 @@ namespace NPascalCoin.RPC {
 		public PascalCoinClient(PascalCoinClientConfiguration configuration) : this(configuration.Server, configuration.Port) {			
 		}
 
-		public PascalCoinClient(string server, int port) {
+		public PascalCoinClient(string server, int port = Constants.DefaultMainNetRpcPort) {
 			_url = new Uri($"http://{server}:{port}");			
 			_callID = 0;
 		}
