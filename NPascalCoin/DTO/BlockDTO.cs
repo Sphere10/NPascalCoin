@@ -101,7 +101,7 @@ namespace NPascalCoin.DTO {
 		/// Estimated network hashrate calculated by previous 50 blocks average
 		/// </summary>
 		[JsonProperty("hashratekhs")]
-		public uint Last50HashRateKhs { get; set; }
+		public ulong Last50HashRateKhs { get; set; }
 
 		/// <summary>
 		/// Number of blocks in the blockchain higher than this
