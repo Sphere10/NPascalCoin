@@ -134,8 +134,10 @@ namespace NPascalCoin {
 		/// <summary>
 		/// Return a JSON Array with "Operation Object" items with operations pending to be included at the Blockchain.
 		/// </summary>
+		/// <param name="start">Starting offset in current pending operation set</param>
+		/// <param name="max">How many to fetch</param>
 		/// <returns>Returns an array holding pending operations in "Operation Object" format</returns>
-		OperationDTO[] GetPendings();
+		OperationDTO[] GetPendings(int? start = null, int? max = null);
 
 		/// <summary>
 		/// Return a JSON Object in "Operation Object" format.

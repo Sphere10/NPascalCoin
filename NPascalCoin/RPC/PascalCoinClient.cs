@@ -134,8 +134,12 @@ namespace NPascalCoin.RPC {
 			});
 		}
 
-		public virtual OperationDTO[] GetPendings() {
-			return Invoke<OperationDTO[]>(ApiMethodName.getpendings.ToString());
+
+		public virtual OperationDTO[] GetPendings(int? start = null, int? max = null) { 
+			return Invoke<OperationDTO[]>(ApiMethodName.getpendings.ToString(), new Dictionary<string, object>() {
+				["start"] = start,
+				["max"] = max
+			});
 		}
 
 		public virtual OperationDTO FindOperation(string ophash) {

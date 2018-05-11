@@ -178,10 +178,10 @@ namespace NPascalCoin {
 		/// Return a JSON Array with "Operation Object" items with operations pending to be included at the Blockchain.
 		/// </summary>
 		/// <returns>Returns an array holding pending operations in "Operation Object" format</returns>
-		public static Task<OperationDTO[]> GetPendingsAsync(this IPascalCoinClient client) {
-			return Task.Run(() => client.GetPendings());
+		public static Task<OperationDTO[]> GetPendingsAsync(this IPascalCoinClient client, int? start = null, int? max = null) {
+			return Task.Run(() => client.GetPendings(start, max));
 		}
-
+		
 		/// <summary>
 		/// Return a JSON Object in "Operation Object" format.
 		/// </summary>
