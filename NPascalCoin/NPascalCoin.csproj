@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\PascalExplorer.com\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -44,10 +44,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DO\BuyAccountOperation.cs" />
+    <Compile Include="DO\ChangeAccountInfo.cs" />
+    <Compile Include="DO\ChangeKeyOperation.cs" />
+    <Compile Include="DO\ChangeKeySigned.cs" />
+    <Compile Include="DO\DelistAccountOperation.cs" />
+    <Compile Include="DO\ListAccountOperation.cs" />
+    <Compile Include="DO\ListAccountOperationBase.cs" />
+    <Compile Include="DO\ListAccountType.cs" />
+    <Compile Include="DO\MultiOperation.cs" />
+    <Compile Include="DO\MultiOperationChangers.cs" />
+    <Compile Include="DO\MultiOperationReceiver.cs" />
+    <Compile Include="DO\MultiOperationSender.cs" />
+    <Compile Include="DO\Operation.cs" />
+    <Compile Include="DO\PublicKey.cs" />
+    <Compile Include="DO\RecoverFundsOperation.cs" />
+    <Compile Include="DO\Signature.cs" />
+    <Compile Include="DO\TransactionOperation.cs" />
+    <Compile Include="DO\TransactionStyle.cs" />
     <Compile Include="DTO\PascalCoinDTO.cs" />
     <Compile Include="DTO\DecryptedPayloadDTO.cs" />
     <Compile Include="DTO\NodeServerDTO.cs" />
     <Compile Include="Enums\AccountState.cs" />
+    <Compile Include="Enums\ChangeInfoType.cs" />
     <Compile Include="Enums\OperationSubType.cs" />
     <Compile Include="Enums\PascalCoinNetwork.cs" />
     <Compile Include="DTO\NetStatsDTO.cs" />

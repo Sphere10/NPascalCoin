@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +24,36 @@ namespace NPascalCoin {
 		/// <summary>
 		/// Recover founds (lost keys)
 		/// </summary>
-		RecoverFunds = 3
-	}
+		RecoverFunds = 3,
 
+		/// <summary>
+		/// List account for sale
+		/// </summary>
+		ListAccountForSale = 4,
+
+		/// <summary>
+		/// Delist account from sale
+		/// </summary>
+		DelistAccount = 5,
+
+		/// <summary>
+		/// Buy account on sale
+		/// </summary>
+		BuyAccount = 6,
+
+		/// <summary>
+		/// Change key with other key signer
+		/// </summary>
+		ChangeKeySigned = 7,
+
+		/// <summary>
+		/// Change account info (name, type)
+		/// </summary>
+		ChangeAccountInfo = 8,
+
+		/// <summary>
+		/// Multi-operation
+		/// </summary>
+		MultiOperation = 9
+	}
 }
