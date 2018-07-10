@@ -44,22 +44,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DO\Branch.cs" />
     <Compile Include="DO\BuyAccountOperation.cs" />
-    <Compile Include="DO\ChangeAccountInfo.cs" />
+    <Compile Include="DO\ChangeAccountInfoOperation.cs" />
+    <Compile Include="DO\ChangeKeySignedOperation.cs" />
     <Compile Include="DO\ChangeKeyOperation.cs" />
-    <Compile Include="DO\ChangeKeySigned.cs" />
     <Compile Include="DO\DelistAccountOperation.cs" />
     <Compile Include="DO\ListAccountOperation.cs" />
     <Compile Include="DO\ListAccountOperationBase.cs" />
+    <Compile Include="DO\Block.cs" />
+    <Compile Include="DO\RewardType.cs" />
     <Compile Include="DO\ListAccountType.cs" />
     <Compile Include="DO\MultiOperation.cs" />
-    <Compile Include="DO\MultiOperationChangers.cs" />
+    <Compile Include="DO\MultiOperationChanger.cs" />
     <Compile Include="DO\MultiOperationReceiver.cs" />
     <Compile Include="DO\MultiOperationSender.cs" />
     <Compile Include="DO\Operation.cs" />
     <Compile Include="DO\PublicKey.cs" />
     <Compile Include="DO\RecoverFundsOperation.cs" />
     <Compile Include="DO\Signature.cs" />
+    <Compile Include="DO\RewardOperation.cs" />
     <Compile Include="DO\TransactionOperation.cs" />
     <Compile Include="DO\TransactionStyle.cs" />
     <Compile Include="DTO\PascalCoinDTO.cs" />

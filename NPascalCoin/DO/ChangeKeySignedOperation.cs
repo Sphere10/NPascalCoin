@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace NPascalCoin {
-	public class ChangeKeyOperation : Operation, IEquatable<ChangeKeyOperation> {
-		public override OperationType Type => OperationType.ChangeKey;
+	public class ChangeKeySignedOperation : Operation, IEquatable<ChangeKeySignedOperation> {
+		public override OperationType Type => OperationType.ChangeKeySigned;
 		public virtual ulong AccountSigner { get; set; }
 		public virtual ulong AccountTarget { get; set; }
 		public virtual ulong NOperation { get; set; }
@@ -12,7 +12,7 @@ namespace NPascalCoin {
 		public virtual PublicKey NewAccountKey { get; set; }
 		public virtual Signature Signature { get; set; }
 
-		public virtual bool Equals(ChangeKeyOperation other) {
+		public virtual bool Equals(ChangeKeySignedOperation other) {
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
 			return base.Equals(other) && AccountSigner == other.AccountSigner && AccountTarget == other.AccountTarget && NOperation == other.NOperation && Fee == other.Fee && Equals(Payload, other.Payload) && Equals(PublicKey, other.PublicKey) && Equals(NewAccountKey, other.NewAccountKey) && Equals(Signature, other.Signature);
@@ -22,7 +22,7 @@ namespace NPascalCoin {
 			if (ReferenceEquals(null, obj)) return false;
 			if (ReferenceEquals(this, obj)) return true;
 			if (obj.GetType() != this.GetType()) return false;
-			return Equals((ChangeKeyOperation) obj);
+			return Equals((ChangeKeySignedOperation) obj);
 		}
 
 		public override int GetHashCode() {
@@ -40,11 +40,11 @@ namespace NPascalCoin {
 			}
 		}
 
-		public static bool operator ==(ChangeKeyOperation left, ChangeKeyOperation right) {
+		public static bool operator ==(ChangeKeySignedOperation left, ChangeKeySignedOperation right) {
 			return Equals(left, right);
 		}
 
-		public static bool operator !=(ChangeKeyOperation left, ChangeKeyOperation right) {
+		public static bool operator !=(ChangeKeySignedOperation left, ChangeKeySignedOperation right) {
 			return !Equals(left, right);
 		}
 	}
