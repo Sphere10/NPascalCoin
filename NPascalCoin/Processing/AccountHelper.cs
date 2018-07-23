@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NPascalCoin {
+namespace NPascalCoin.Processing {
 	public static class AccountHelper {
 		
 		public static string ToAccountString(uint accountNo) {

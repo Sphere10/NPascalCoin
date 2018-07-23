@@ -483,5 +483,58 @@ namespace NPascalCoin {
 		/// <returns>Boolean "true"</returns>
 		bool StartNode();
 
+		/// <summary>
+		/// Signs a digest message using a public key
+		/// </summary>
+		/// <param name="digest">The hexstring to sign.</param>
+		/// <param name="b58_pubkey">HEXASTRING with the public key that will use to sign digest data</param>
+		/// <param name="enc_pubkey">HEXASTRING with the public key that will use to sign digest data. On return, will contain the public key used to sign the digest.</param>
+		/// <param name="signature">The signature</param>
+		/// <returns>Whether signing succeeded</returns>
+		SignResultDTO SignMessage(string digest, string b58_pubkey, string enc_pubkey);
+
+		/// <summary>
+		/// Verify if a digest message is signed by a public key
+		/// </summary>
+		/// <param name="digest">HEXASTRING with the message to sign</param>
+		/// <param name="enc_pubkey">HEXASTRING with the public key that will use to sign digest data..</param>
+		/// <param name="signature">The signature from <see cref="SignMessage"/>SignMessage</param> call.
+		/// <returns>Whether or not signaure verification succeeded.</returns>
+		SignResultDTO VerifySign(string digest, string enc_pubkey, string signature);
+
+		/// <summary>
+		/// Adds operations to a multioperation (or creates a new multioperation and adds new operations).
+		/// </summary>
+		/// <param name="rawoperations">Previous multi-operation state.</param>
+		/// <param name="auto_n_operation">Will fill n_operation (if not provided). Only valid if wallet is ONLINE (no cold wallets)</param>
+		/// <param name="senders">List of senders</param>
+		/// <param name="receivers">List of receivers</param>
+		/// <param name="changesinfo">List of changers</param>
+		/// <returns></returns>
+		RawMultiOperationDTO MultiOperationAdd(string rawoperations, bool auto_n_operation, SenderDTO[] senders, ReceiverDTO[] receivers, ChangerDTO[] changesinfo);
+
+		/// <summary>
+		/// This method will sign a Multioperation found in a "rawoperations", must provide all n_operation info of each signer because can work in cold wallets
+		/// </summary>
+		/// <param name="rawoperations">previous multioperation state.</param>
+		/// <param name="signers">AccountKey objects with info about accounts and public keys to sign</param>
+		/// <returns>If success will return a "MultiOperation Object"</returns>
+		RawMultiOperationDTO MultiOperationSignOffline(string rawoperations, AccountKeyDTO[] signers);
+
+		/// <summary>
+		/// This method will sign a Multioperation found in a "rawoperations" based on current safebox state public keys
+		/// </summary>
+		/// <param name="rawoperations">HEXASTRING with 1 multioperation in Raw format</param>
+		/// <returns>If success will return a "MultiOperation Object"</returns>
+		RawMultiOperationDTO MultiOperationSignOnline(string rawoperations);
+
+		/// <summary>
+		/// This method will sign a Multioperation found in a "rawoperations" based on current safebox state public keys
+		/// </summary>
+		/// <param name="rawoperations">HEXASTRING with 1 multioperation in Raw format</param>
+		/// <param name="index">Index of the operation to remove</param>
+		/// <returns>If success will return a "MultiOperation Object"</returns>
+		RawMultiOperationDTO MultiOperationDeleteOperation(string rawoperations, int index);
+
 	}
 }

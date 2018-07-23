@@ -18,6 +18,19 @@ namespace NPascalCoin {
 
 		#endregion
 
+		#region Connection Testers
+
+		public static async Task<string> TestConnectionAsync(this IPascalCoinClient client) {
+			try {
+				var result = await client.NodeStatusAsync();
+				return string.Empty;
+			} catch (Exception error) {
+				return error.Message;
+			}
+		}
+
+		#endregion
+
 		#region Async overloads extensions
 
 		public static async Task<IDisposable> EnterUnlockScopeAsync(this IPascalCoinClient client, string pwd) {
@@ -580,6 +593,30 @@ namespace NPascalCoin {
 		/// <returns>Boolean "true"</returns>
 		public static Task<bool> StartNodeAsync(this IPascalCoinClient client) {
 			return Task.Run(() => client.StartNode());
+		}
+
+		public static Task<SignResultDTO> SignMessageAsync(this IPascalCoinClient client, string digest, string b58_pubkey, string enc_pubkey) {
+			return Task.Run(() => client.SignMessage(digest, b58_pubkey, enc_pubkey));
+		}
+
+		public static Task<SignResultDTO> VerifySignAsync(this IPascalCoinClient client, string digest, string enc_pubkey, string signature) {
+			return Task.Run(() => client.VerifySign(digest, enc_pubkey, signature));
+		}
+
+		public static Task<RawMultiOperationDTO> MultiOperationAddAsync(this IPascalCoinClient client, string rawoperations, bool auto_n_operation, SenderDTO[] senders, ReceiverDTO[] receivers, ChangerDTO[] changesinfo) {
+			return Task.Run(() => client.MultiOperationAdd(rawoperations, auto_n_operation, senders, receivers, changesinfo));
+		}
+
+		public static Task<RawMultiOperationDTO> MultiOperationSignOfflineAsync(this IPascalCoinClient client, string rawoperations, AccountKeyDTO[] signers) {
+			return Task.Run(() => client.MultiOperationSignOffline(rawoperations, signers));
+		}
+
+		public static Task<RawMultiOperationDTO> MultiOperationSignOnlineAsync(this IPascalCoinClient client, string rawoperations) {
+			return Task.Run(() => client.MultiOperationSignOnline(rawoperations));
+		}
+
+		public static Task<RawMultiOperationDTO> MultiOperationDeleteOperationAsync(this IPascalCoinClient client, string rawoperations, int index) {
+			return Task.Run(() => client.MultiOperationDeleteOperation(rawoperations, index));
 		}
 
 		#endregion

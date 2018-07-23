@@ -50,5 +50,12 @@ namespace NPascalCoin {
 		setwalletpassword,
 		stopnode,
 		startnode,
+		signmessage,
+		verifysign,
+		multioperationaddoperation,
+		multioperationdeleteoperation,
+		multioperationsignoffline,
+		multioperationsignonline,
+		operationsdelete,
 	}
 }

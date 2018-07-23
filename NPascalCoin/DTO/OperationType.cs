@@ -54,6 +54,9 @@ namespace NPascalCoin {
 		/// <summary>
 		/// Multi-operation
 		/// </summary>
-		MultiOperation = 9
+		MultiOperation = 9,
+
+
+		Invalid = 255
 	}
 }

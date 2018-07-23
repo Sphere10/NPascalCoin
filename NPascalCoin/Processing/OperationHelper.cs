@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NPascalCoin {
+namespace NPascalCoin.Processing {
 	public static class OperationHelper {
 		
 		public static string GetOperationID(string ophash) {

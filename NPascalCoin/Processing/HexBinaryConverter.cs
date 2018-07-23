@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace NPascalCoin {
+namespace NPascalCoin.Processing {
 	public sealed class HexBinaryConverter : JsonConverter {
 		public override bool CanConvert(Type objectType) {
 			return typeof(byte[]) == objectType;

@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace NPascalCoin.DTO {
 
-
 	/// <summary>
 	/// A "Raw operations object" is a JSON object with information about a signed operation made by "signsendto" or "signchangekey"
 	/// </summary>
@@ -38,5 +37,4 @@ namespace NPascalCoin.DTO {
 		[JsonProperty("rawoperations")]
 		public string RawOperations { get; set; }
 	}
-
 }

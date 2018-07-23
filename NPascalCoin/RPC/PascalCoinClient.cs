@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPascalCoin.DTO;
+using NPascalCoin.Processing;
+
 // ReSharper disable InconsistentNaming
 
 
@@ -24,6 +26,9 @@ namespace NPascalCoin.RPC {
 		}
 
 		public PascalCoinClient(PascalCoinClientConfiguration configuration) : this(configuration.Server, configuration.Port) {			
+		}
+
+		public PascalCoinClient(NodeEndpoint endpoint) : this(endpoint.IP.ToString(), endpoint.Port) {
 		}
 
 		public PascalCoinClient(string server, int port = Constants.DefaultMainNetRpcPort) {
@@ -432,6 +437,53 @@ namespace NPascalCoin.RPC {
 		public virtual bool StartNode() {
 			return Invoke<bool>(ApiMethodName.startnode.ToString());
 		}
+
+		public SignResultDTO SignMessage(string digest, string b58_pubkey, string enc_pubkey) {
+			return Invoke<SignResultDTO>(ApiMethodName.signmessage.ToString(), new Dictionary<string, object>() {
+				["digest"] = digest,
+				["b58_pubkey"] = b58_pubkey,
+				["enc_pubkey"] = enc_pubkey
+			});
+		}
+
+		public SignResultDTO VerifySign(string digest, string enc_pubkey, string signature) {
+			return Invoke<SignResultDTO>(ApiMethodName.verifysign.ToString(), new Dictionary<string, object>() {
+				["digest"] = digest,
+				["enc_pubkey"] = enc_pubkey,
+				["signature"] = signature
+			});
+		}
+
+		public RawMultiOperationDTO MultiOperationAdd(string rawoperations, bool auto_n_operation, SenderDTO[] senders, ReceiverDTO[] receivers, ChangerDTO[] changesinfo) {
+			return Invoke<RawMultiOperationDTO>(ApiMethodName.multioperationaddoperation.ToString(), new Dictionary<string, object>() {
+				["rawoperations"] = rawoperations,
+				["auto_n_operation"] = auto_n_operation,
+				["senders"] = senders,
+				["receivers"] = receivers,
+				["changesinfo"] = changesinfo,
+			});
+		}
+
+		public RawMultiOperationDTO MultiOperationSignOffline(string rawoperations, AccountKeyDTO[] signers) {
+			return Invoke<RawMultiOperationDTO>(ApiMethodName.multioperationsignoffline.ToString(), new Dictionary<string, object>() {
+				["rawoperations"] = rawoperations,
+				["signers"] = signers
+			});
+		}
+
+		public RawMultiOperationDTO MultiOperationSignOnline(string rawoperations) {
+			return Invoke<RawMultiOperationDTO>(ApiMethodName.multioperationsignonline.ToString(), new Dictionary<string, object>() {
+				["rawoperations"] = rawoperations
+			});
+		}
+
+		public RawMultiOperationDTO MultiOperationDeleteOperation(string rawoperations, int index) {
+			return Invoke<RawMultiOperationDTO>(ApiMethodName.multioperationdeleteoperation.ToString(), new Dictionary<string, object>() {
+				["rawoperations"] = rawoperations,
+				["index"] = index,
+			});
+		}
+
 
 		protected virtual T Invoke<T>(string method, IDictionary<string, object> arguments = null) {
 			using (var callScope = new CallScope(this)) {
