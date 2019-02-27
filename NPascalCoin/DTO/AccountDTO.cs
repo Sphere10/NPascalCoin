@@ -77,6 +77,17 @@ namespace NPascalCoin.DTO {
 		/// </summary>
 		[JsonProperty("updated_b")]
 		public uint LastUpdatedBlock { get; set; }
-	}
+		
+		/// <summary>
+		/// Account price (PASCURRENCY)
+		/// </summary>
+		[JsonProperty("price")]
+		public decimal? Price { get; set; }
 
+		/// <summary>
+		/// Seller account number
+		/// </summary>
+		[JsonProperty("seller_account")]
+		public uint? SellerAccount { get; set; }
+	}
 }
