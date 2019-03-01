@@ -177,15 +177,9 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 /.vs/config/applicationhost.config
-/NBitcoin.Portable/NBitcoin(MonoAndroid).csproj.bak
-/NBitcoin.Portable/NBitcoin(Mono).csproj.bak
 
 # .NET Core projects
 .vs/
 project.lock.json
 .vscode/
-/NBitcoin.Tests/CanStoreInBlockRepository-Headers/StoreLock
-/NBitcoin.Tests/addrmancache.dat
-/NBitcoin.Tests/CanStoreBlocks/StoreLock
-/NBitcoin.Tests/libbitcoinconsensus-0.dll
-*.zip
+

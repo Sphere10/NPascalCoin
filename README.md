@@ -1,6 +1,10 @@
 # NPascalCoin
 
-NPascalCoin is a C# library for PascalCoin. Currently only the JSON-RPC API is supported with plans to add full-protocol support in future.
+NPascalCoin is a cross-platform (.NET Standard 2) library for PascalCoin. 
+
+Currently only a client for the Classic JSON-RPC is provided.
+
+**NOTE**: This library is under heavy development, please use [Releases/1.0.0](https://github.com/Sphere10/NPascalCoin/tree/Releases/1.0.0) branch for prior version.
 
 ## Usage
 
@@ -31,7 +35,6 @@ using (client.EnterUnlockWalletScope("password")) {
 } 
 ```
 
-
 Asyncronously
 
 ```csharp 
@@ -43,5 +46,16 @@ using (await client.EnterUnlockWalletScopeAsync("password")) {
 
 **NOTE**: WalletScopes unlock the wallet inside the scope and then lock as the scope exists. They are only needed when authoring operations. You can also manually lock and unlock the wallet using `Lock` and `Unlock` methods.
 
-# Credits
-Herman Schoenfeld <herman@sphere10.com>
+# Roadmap
+  - Full Layer-1 protocol implementation for all versions (version 1 to current)
+    - Networking Layer
+    - Consensus Layer
+  - Stand-alone node implementation (can run as daemon/service without classic)
+    - Classic datafile persistance support
+    - SQL persistance support
+    - NoSQL persisance support
+  - Full Layer-2 implementation
+    - E-PASA
+    - General-purpose networking support for Layer-2 Dapps.
+    - General-purpose consensus support for Layer-2 Dapps.
+  
