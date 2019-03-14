@@ -16,5 +16,6 @@ namespace NPascalCoin {
 		public const int DefaultTestNetMinerPort = 4109;
 		public const int AccountsPerBlock = 5;
 		public const int OpHashByteLength = 32;
+
 	}
 }

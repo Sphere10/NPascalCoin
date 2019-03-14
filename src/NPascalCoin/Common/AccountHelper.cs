@@ -18,6 +18,10 @@ namespace NPascalCoin.Common {
 			return (byte)(overflowSafeAccountNo * 101 % 89 + 10);
 		}
 
+		public static bool IsValidAccountChecksum(uint accountNo, uint accountChecksum) {
+			return accountChecksum == CalculateAccountChecksum(accountNo);
+		}
+
 		public static uint MaxMaturedAccount(uint blockHeight) {
 			return (uint)((long)blockHeight - 100).ClipTo(0, uint.MaxValue) * Constants.AccountsPerBlock;
 		}
@@ -53,6 +57,5 @@ namespace NPascalCoin.Common {
 
 			return checksum == CalculateAccountChecksum(account);
 		}
-
 	}
 }
