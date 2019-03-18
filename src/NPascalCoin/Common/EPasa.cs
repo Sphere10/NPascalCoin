@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NPascalCoin.API.Classic.Objects;
-using NPascalCoin.Common.Parsing;
+using NPascalCoin.Common.Text;
 using Sphere10.Framework;
 
 
@@ -33,14 +33,17 @@ namespace NPascalCoin.Common {
 
 		public byte[] GetRawPayloadBytes() {
 			if (PayloadType.HasFlag(PayloadType.AsciiFormatted)) {
-				return Encoding.ASCII.GetBytes(Payload);
-			} else if (PayloadType.HasFlag(PayloadType.Base58Formatted)) {
-				//return Encoding.Base58.GetBytes(Payload);
-				throw new NotImplementedException(nameof(PayloadType.Base58Formatted));
-			} else if (PayloadType.HasFlag(PayloadType.HexFormatted)) {
+				return System.Text.Encoding.ASCII.GetBytes(Payload);
+			}
+
+			if (PayloadType.HasFlag(PayloadType.Base58Formatted)) {
+				return PascalBase58Encoding.Decode(Payload);
+			}
+
+			if (PayloadType.HasFlag(PayloadType.HexFormatted)) {
 				return Payload.ToHexByteArray();
 			}
-			return Payload.ToHexByteArray();
+			throw new PascalCoinException("Unknown payload encoding");
 		}
 
 		public static EPasa Parse(string EPasaText) {
@@ -63,7 +66,7 @@ namespace NPascalCoin.Common {
 		public string ToString(bool omitExtendedChecksum) {
 			var result = string.Empty;
 			if (PayloadType.HasFlag(PayloadType.AddressedByName)) {
-				result += AccountName;
+				result += Pascal64Encoding.Escape(AccountName);
 			} else {
 				result += Account.ToString();
 				if (AccountChecksum != null) {
@@ -73,11 +76,11 @@ namespace NPascalCoin.Common {
 
 			var payloadContent = string.Empty;
 			if (PayloadType.HasFlag(PayloadType.AsciiFormatted)) {
-				payloadContent = $@"""{Payload}]""";
+				payloadContent = $@"""{PascalAsciiEncoding.Escape(Payload)}]""";
 			} else if (PayloadType.HasFlag(PayloadType.HexFormatted)) {
 				payloadContent = $@"0x{Payload}]";
 			} else if (PayloadType.HasFlag(PayloadType.Base58Formatted)) {
-				payloadContent = $"{payloadContent}";
+				payloadContent = $"{Payload}";
 			} else {
 				// it is non-deterministic, so payload content is ignored
 				payloadContent = string.Empty;
@@ -89,10 +92,10 @@ namespace NPascalCoin.Common {
 				result += $"({payloadContent})";
 			} else if (PayloadType.HasFlag(PayloadType.SenderKeyEncrypted)) {
 				result += $"<{payloadContent}>";
-			} else if (PayloadType.HasFlag(PayloadType.AESEncrypted)) {
-				result += $"{{{payloadContent}:{Password}}}";
+			} else if (PayloadType.HasFlag(PayloadType.PasswordEncrypted)) {
+				result += $"{{{payloadContent}:{PascalAsciiEncoding.Escape(Password)}}}";
 			} else {
-				// it is non-deterministic, so payload content is never specified
+				// it is non-deterministic, so payload omitted entirely
 			}
 
 			if (ExtendedChecksum != null && !omitExtendedChecksum)

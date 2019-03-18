@@ -7,9 +7,9 @@ using NPascalCoin.Common;
 using Sphere10.Framework;
 
 
-namespace NPascalCoin.Common.Parsing {
+namespace NPascalCoin.Common.Text {
 
-	public class RecursiveDescentEPasaParser : IEPasaParser {
+	public class RecursiveDescentEPasaParser : EPasaParserBase {
 
 		public enum TokenType {
 			EPASA,
@@ -25,7 +25,7 @@ namespace NPascalCoin.Common.Parsing {
 			Payload,
 			PayloadChecksum,
 			Number,
-			SafeAnsiString,
+			PascalAsciiString,
 			Pascal64String,
 			HexString,
 			Base58String
@@ -62,7 +62,7 @@ namespace NPascalCoin.Common.Parsing {
 		}
 
 
-		public bool TryParse(string epasaText, out EPasa epasa, out EPasaErrorCode errorCode) {
+		public override bool TryParse(string epasaText, out EPasa epasa, out EPasaErrorCode errorCode) {
 			throw new NotImplementedException();
 		}
 
@@ -161,16 +161,16 @@ namespace NPascalCoin.Common.Parsing {
 				case TokenType.PasswordEncPayload:
 					SkipChar(reader, '{', ref error);
 					result = TryParseEPasaInternal(TokenType.Payload, reader, ref error);
-					((PayloadNode) result).Encryption = ((PayloadNode)result).Encryption | PayloadType.AESEncrypted;
+					((PayloadNode) result).Encryption = ((PayloadNode)result).Encryption | PayloadType.PasswordEncrypted;
 					SkipChar(reader, ':', ref error);
-					((PayloadNode) result).Password = TryParseEPasaInternal(TokenType.SafeAnsiString, reader, ref error) as ValueNode;
+					((PayloadNode) result).Password = TryParseEPasaInternal(TokenType.PascalAsciiString, reader, ref error) as ValueNode;
 					SkipChar(reader, '}', ref error);
 					break;
 				case TokenType.Payload:
 					if (nextChar == '"') {
 						result = new PayloadNode {
-							Type = TokenType.SafeAnsiString,
-							Content = TryParseEPasaInternal(TokenType.SafeAnsiString, reader, ref error, prefix: "\"", postFix: "\"") as ValueNode
+							Type = TokenType.PascalAsciiString,
+							Content = TryParseEPasaInternal(TokenType.PascalAsciiString, reader, ref error, prefix: "\"", postFix: "\"") as ValueNode
 						};
 					} else if (IsStartChar(TokenType.HexString, nextChar)) {
 						result = new PayloadNode {
@@ -188,12 +188,12 @@ namespace NPascalCoin.Common.Parsing {
 				case TokenType.PayloadChecksum:
 					result = TryParseEPasaInternal(TokenType.HexString, reader, ref error);
 					break;
-				case TokenType.SafeAnsiString:
+				case TokenType.PascalAsciiString:
 					string safeAnsiString = null;
-					while (IsValidValueChar(TokenType.SafeAnsiString, nextChar)) {
-						if (nextChar == EncodingHelper.EscapeChar) {
+					while (IsValidValueChar(TokenType.PascalAsciiString, nextChar)) {
+						if (nextChar == PascalAsciiEncoding.EscapeChar) {
 							nextChar = NextChar(reader);
-							if (nextChar == null || !EncodingHelper.SafeAnsiCharSetEscaped.Contains($"{nextChar}")) {
+							if (nextChar == null || !PascalAsciiEncoding.PascalAsciiCharSetEscaped.Contains($"{nextChar}")) {
 								error = nextChar == null ? "Unexpected end" : $"Illegal escape sequence \\'{nextChar}'";
 								break;
 							}
@@ -204,7 +204,7 @@ namespace NPascalCoin.Common.Parsing {
 
 					if (error != null)
 						result = new ValueNode {
-							Type = TokenType.SafeAnsiString,
+							Type = TokenType.PascalAsciiString,
 							Value = safeAnsiString
 						};
 					break;
@@ -294,17 +294,17 @@ namespace NPascalCoin.Common.Parsing {
 				case TokenType.Payload:
 					return c.IsIn('0', '"') || IsStartChar(TokenType.Base58String, c);
 				case TokenType.PayloadChecksum:
-					return EncodingHelper.HexStringCharSet.Contains($"{c}");
+					return HexEncoding.HexStringCharSet.Contains($"{c}");
 				case TokenType.Number:
 					return c.IsIn('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-				case TokenType.SafeAnsiString:
-					return EncodingHelper.SafeAnsiCharSetUnescaped.Contains($"{c}");
+				case TokenType.PascalAsciiString:
+					return PascalAsciiEncoding.PascalAsciiCharSetUnescaped.Contains($"{c}");
 				case TokenType.Pascal64String:
-					return EncodingHelper.Pascal64CharSet.Contains($"{c}");
+					return Pascal64Encoding.Pascal64CharSet.Contains($"{c}");
 				case TokenType.HexString:
-					return EncodingHelper.HexStringCharSet.Contains($"{c}");
+					return HexEncoding.HexStringCharSet.Contains($"{c}");
 				case TokenType.Base58String:
-					return EncodingHelper.Base58CharSet.Contains($"{c}");
+					return PascalBase58Encoding.CharSet.Contains($"{c}");
 				default:
 					throw new ArgumentOutOfRangeException(nameof(token), token, null);
 			}
@@ -330,14 +330,14 @@ namespace NPascalCoin.Common.Parsing {
 					throw new ArgumentOutOfRangeException(nameof(token), token, "Token not a grammar terminal");
 				case TokenType.Number:
 					return c.IsIn('1', '2', '3', '4', '5', '6', '7', '8', '9');
-				case TokenType.SafeAnsiString:
+				case TokenType.PascalAsciiString:
 					return (int) c >= 32 && (int) c <= 126;
 				case TokenType.Pascal64String:
-					return EncodingHelper.Pascal64CharSet.Contains(c.ToString());
+					return Pascal64Encoding.Pascal64CharSet.Contains(c.ToString());
 				case TokenType.HexString:
-					return EncodingHelper.HexStringCharSet.Contains(c.ToString());
+					return HexEncoding.HexStringCharSet.Contains(c.ToString());
 				case TokenType.Base58String:
-					return EncodingHelper.Base58CharSet.Contains(c.ToString());
+					return PascalBase58Encoding.CharSet.Contains(c.ToString());
 				default:
 					throw new ArgumentOutOfRangeException(nameof(token), token, null);
 			}

@@ -3,12 +3,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NPascalCoin.Common;
-using NPascalCoin.Common.Parsing;
+using NPascalCoin.Common.Text;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Sphere10.Framework;
 
-namespace Tests {
+namespace NPascalCoin.UnitTests.Text {
 	public abstract class IEPasaParserTests {
 		[SetUp]
 		public void Setup() {
@@ -31,6 +31,7 @@ namespace Tests {
 		public void AccountNumber_Illegal() {
 			var parser = NewInstance();
 			Assert.IsFalse(parser.TryParse("077", out var epasa));
+			Assert.IsFalse(parser.TryParse("77s-44", out epasa));
 		}
 
 		[Test]
@@ -47,10 +48,11 @@ namespace Tests {
 		[Test]
 		public void AccountNumber_Checksum_Illegal() {
 			var parser = NewInstance();
-			Assert.IsFalse(parser.TryParse("077-44", out var epasa));
+			Assert.IsFalse(parser.TryParse("77- 44", out var epasa));
 			Assert.IsFalse(parser.TryParse("77-444", out epasa));
-			Assert.IsFalse(parser.TryParse("-77-44", out epasa));
+			Assert.IsFalse(parser.TryParse("77-4c", out epasa));
 		}
+
 
 
 		[Test]
@@ -89,11 +91,8 @@ namespace Tests {
 			Assert.IsTrue(parser.TryParse("77-44", out var epasa));
 			Assert.AreEqual(77, epasa.Account);
 			Assert.AreEqual(44, epasa.AccountChecksum);
-			Assert.AreEqual("77", epasa.AccountChecksum);
 			Assert.AreEqual("77-44", epasa.ToString());
 		}
-
-
 
 	}
 }

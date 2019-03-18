@@ -6,37 +6,26 @@ using System.Text.RegularExpressions;
 using NPascalCoin.API.Classic.Objects;
 using NPascalCoin.Common;
 
-namespace NPascalCoin.Common.Parsing {
-	public partial class RegexEPasaParser : IEPasaParser {
+namespace NPascalCoin.Common.Text {
+	public class RegexEPasaParser : EPasaParserBase {
 		// note: regex syntax escapes following chars [\^$.|?*+(){}
 		// note: epasa syntax escapes following chars: :\"[]()<>(){}
 		// note: c-sharp syntax verbatim strings escape: " as ""
-		public const string SafeAnsiCharPattern = @"( |!|\\""|#|\$|%|&|'|\\\(|\\\)|\*|\+|,|-|\.|/|0|1|2|3|4|5|6|7|8|9|\\:|;|\\<|=|\\>|\?|@|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|\\\[|\\\\|\\]|\^|_|`|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|\\\{|\||\\\}|~)";
-		public const string SafeAnsiStringPattern = SafeAnsiCharPattern + "+";
-		public const string Pascal64StartCharPattern = @"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|!|@|#|\$|%|\^|&|\*|\\\(|\\\)|-|\+|\\\{|\\\}|\\\[|\\]|_|\\:|`|\||\\<|\\>|,|\.|\?|/|~)";
-		public const string Pascal64NextCharPattern = @"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|0|1|2|3|4|5|6|7|8|9|!|@|#|\$|%|\^|&|\*|\\\(|\\\)|-|\+|\\\{|\\\}|\\\[|\\]|_|\\:|`|\||\\<|\\>|,|\.|\?|/|~)";
-		public const string Pascal64StringPattern = Pascal64StartCharPattern + Pascal64NextCharPattern + "{2,63}";
-		public const string HexNibblePattern = @"[0-9a-f]";
-		public const string HexBytePattern = HexNibblePattern + "{2}";
-		public const string HexStringPattern = "(?:" + HexBytePattern + ")+";
-		public const string Base58CharPattern = "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
-		public const string Base58StringPattern =  Base58CharPattern + "+";
 		public const string IntegerPattern = @"[1-9]\d+";
-		public const string AccountNamePattern = @"(?<AccountName>" + Pascal64StringPattern + ")";
+		public const string AccountNamePattern = @"(?<AccountName>" + Pascal64Encoding.Pascal64StringPattern + ")";
 		public const string AccountChecksumPattern = @"(?:(?<ChecksumDelim>-)(?<Checksum>\d{2}))?";
 		public const string AccountNumberPattern = "(?<AccountNumber>" + IntegerPattern + ")" + AccountChecksumPattern ;
 		public const string PasaPattern = "(" + AccountNumberPattern + "|" + AccountNamePattern + ")";
-		public const string ASCIIContentPattern = @"""" + SafeAnsiStringPattern + @"""";
-		public const string HexContentPattern =  "0x" + HexStringPattern;
-		public const string Base58ContentPattern = Base58StringPattern;
-		public const string PayloadPasswordPattern = "(?:(?<PayloadPasswordDelim>" + ":){1}(?<PayloadPassword>" + SafeAnsiStringPattern + ")?)?";
+		public const string ASCIIContentPattern = @"""" + PascalAsciiEncoding.PascalAsciiStringPattern + @"""";
+		public const string HexContentPattern = "0x" + HexEncoding.HexStringPattern;
+		public const string Base58ContentPattern = PascalBase58Encoding.SubStringPattern;
+		public const string PayloadPasswordPattern = "(?:(?<PayloadPasswordDelim>" + ":){1}(?<PayloadPassword>" + PascalAsciiEncoding.PascalAsciiStringPattern + ")?)?";
 		public const string PayloadStartCharPattern = @"(?<PayloadStartChar>[\[\(<\{])";
 		public const string PayloadEndCharPattern = @"(?<PayloadEndChar>[]\)>\}])";
 		public const string PayloadContentPattern = "(?<PayloadContent>" + ASCIIContentPattern + "|" + HexContentPattern + "|" + Base58ContentPattern + ")?";
 		public const string PayloadPattern = "(?:" + PayloadStartCharPattern + PayloadContentPattern + PayloadPasswordPattern + PayloadEndCharPattern + ")?";
-		public const string ExtendedChecksumPattern = "(?:" + "(?<ExtendedChecksumDelim>:)" + "(?<ExtendedChecksum>" + HexBytePattern + HexBytePattern +"))?";
+		public const string ExtendedChecksumPattern = "(?:" + "(?<ExtendedChecksumDelim>:)" + "(?<ExtendedChecksum>" + HexEncoding.HexBytePattern + HexEncoding.HexBytePattern +"))?";
 		public const string EPasaPattern = PasaPattern + PayloadPattern + ExtendedChecksumPattern;
-
 
 		private static readonly Regex _epasaRegex;
 
@@ -44,7 +33,7 @@ namespace NPascalCoin.Common.Parsing {
 			_epasaRegex = new Regex(EPasaPattern);
 		}
 		
-		public bool TryParse(string epasaText, out EPasa epasa, out EPasaErrorCode errorCode) {
+		public override bool TryParse(string epasaText, out EPasa epasa, out EPasaErrorCode errorCode) {
 			errorCode = EPasaErrorCode.Success;
 			epasa = new EPasa();
 
@@ -56,7 +45,7 @@ namespace NPascalCoin.Common.Parsing {
 			var match = _epasaRegex.Match(epasaText);
 			var checksumDelim = match.Groups["ChecksumDelim"].Success ? match.Groups["ChecksumDelim"].Value : null;
 			var accountNumber = match.Groups["AccountNumber"].Success ? match.Groups["AccountNumber"].Value : null;
-			var accountChecksum = match.Groups["AccountChecksum"].Success ? match.Groups["AccountChecksum"].Value : null;
+			var accountChecksum = match.Groups["Checksum"].Success ? match.Groups["Checksum"].Value : null;
 			var accountName = match.Groups["AccountName"].Success ? match.Groups["AccountName"].Value : null;
 			var payloadStartChar = match.Groups["PayloadStartChar"].Success ? match.Groups["PayloadStartChar"].Value : null;
 			var payloadEndChar = match.Groups["PayloadEndChar"].Success ? match.Groups["PayloadEndChar"].Value : null;
@@ -86,7 +75,6 @@ namespace NPascalCoin.Common.Parsing {
 					errorCode = EPasaErrorCode.AccountNumberTooLong;
 					return false;
 				}
-				epasa.PayloadType = epasa.PayloadType ^ PayloadType.AddressedByName;
 				epasa.Account = accNo;
 
 				if (checksumDelim != null) {
@@ -132,7 +120,7 @@ namespace NPascalCoin.Common.Parsing {
 						errorCode = EPasaErrorCode.MismatchedPayloadEncoding;
 						return false;
 					}
-					epasa.PayloadType = epasa.PayloadType | PayloadType.AESEncrypted;
+					epasa.PayloadType = epasa.PayloadType | PayloadType.PasswordEncrypted;
 					break;
 				default:
 					throw new NotSupportedException($"Unrecognized start character '{payloadStartChar}'");
@@ -140,7 +128,7 @@ namespace NPascalCoin.Common.Parsing {
 			}
  
 			// Password
-			if (epasa.PayloadType.HasFlag(PayloadType.AESEncrypted)) {
+			if (epasa.PayloadType.HasFlag(PayloadType.PasswordEncrypted)) {
 				if (payloadPasswordDelim == null) {
 					errorCode = EPasaErrorCode.MissingPassword;
 					return false;
@@ -180,7 +168,7 @@ namespace NPascalCoin.Common.Parsing {
 					errorCode = EPasaErrorCode.MissingAccountChecksum;
 					return false;
 				}
-				if (!EPasaHelper.IsValidExtendedChecksum(epasa.ToString(true), epasa.ExtendedChecksum)) {
+				if (!EPasaHelper.IsValidExtendedChecksum(epasa.ToString(true), extendedChecksum)) {
 					errorCode = EPasaErrorCode.BadExtendedChecksum;
 					return false;
 				}

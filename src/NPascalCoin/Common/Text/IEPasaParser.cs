@@ -6,7 +6,7 @@ using Sphere10.Framework;
 
 using  NPascalCoin.Common;
 
-namespace NPascalCoin.Common.Parsing {
+namespace NPascalCoin.Common.Text {
 	public interface IEPasaParser {
 		bool TryParse(string epasaText, out EPasa epasa, out EPasaErrorCode errorCode);
 	}

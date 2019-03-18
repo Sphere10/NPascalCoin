@@ -30,21 +30,25 @@ namespace NPascalCoin.Common {
 		}
 
 		public static bool IsValidExtendedChecksum(string text, string checksum) {
-			return ComputeExtendedChecksum(text) == checksum;
+			var comp = ComputeExtendedChecksum(text);
+			return  comp == checksum;
 		}
 
 		public static bool IsValidPayloadLength(PayloadType payloadType, string payloadContent) {
+			if (string.IsNullOrEmpty(payloadContent))
+				return true;
+
 			if (payloadType.HasFlag(PayloadType.Public)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length == 255;
+					return payloadContent.Length <= MaxPublicAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
-					return payloadContent.Length == 510 + 2;
+					return payloadContent.Length <= MaxPublicHexContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.Base58Formatted)) {
-					return payloadContent.Length == 348;
+					return payloadContent.Length <= MaxPublicBase58ContentLength;
 				}
 
 				// unknown encoding format
@@ -53,32 +57,32 @@ namespace NPascalCoin.Common {
 
 			if (payloadType.HasFlag(PayloadType.SenderKeyEncrypted) || payloadType.HasFlag(PayloadType.RecipientKeyEncrypted)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length == 144;
+					return payloadContent.Length <= MaxECIESAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
-					return payloadContent.Length == 288 + 2;
+					return payloadContent.Length <= MaxECIESHexContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.Base58Formatted)) {
-					return payloadContent.Length == 196;
+					return payloadContent.Length <= MaxECIESBase58ContentLength;
 				}
 
 				// unknown encoding format
 				return false;
 			}
 
-			if (payloadType.HasFlag(PayloadType.AESEncrypted)) {
+			if (payloadType.HasFlag(PayloadType.PasswordEncrypted)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length == 223;
+					return payloadContent.Length <= MaxAESAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
-					return payloadContent.Length == 446 + 2;
+					return payloadContent.Length <= MaxAESHexContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.Base58Formatted)) {
-					return payloadContent.Length == 304;
+					return payloadContent.Length <= MaxAESBase58ContentLength;
 				}
 
 				// unknown encoding format

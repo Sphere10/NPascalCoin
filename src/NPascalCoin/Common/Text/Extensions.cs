@@ -6,7 +6,7 @@ using Sphere10.Framework;
 
 using  NPascalCoin.Common;
 
-namespace NPascalCoin.Common.Parsing {
+namespace NPascalCoin.Common.Text {
 	public static class Extensions {
 
 		public static bool TryParse(this IEPasaParser parser, string epasaText, out EPasa epasa) {

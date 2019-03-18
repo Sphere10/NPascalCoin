@@ -1,4 +1,4 @@
-﻿namespace NPascalCoin.Common.Parsing {
+﻿namespace NPascalCoin.Common.Text {
 	public enum EPasaErrorCode {
 		Success,
 		BadFormat,
