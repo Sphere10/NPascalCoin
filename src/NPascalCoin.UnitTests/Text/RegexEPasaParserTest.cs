@@ -7,7 +7,7 @@ using NUnit.Framework;
 using NPascalCoin.UnitTests;
 
 namespace NPascalCoin.UnitTests.Text {
-	public class RegexEPasaParserTest : IEPasaParserTests {
+	public class RegexEPasaParserTest : EPasaTests {
 		public override IEPasaParser NewInstance() {
 			return new RegexEPasaParser();
 		}
@@ -237,9 +237,9 @@ namespace NPascalCoin.UnitTests.Text {
 		[Test]
 		public void EPasa_Full() {
 			AssertEx.RegexMatch(@"77-44[""hello world!""]:ffee", RegexEPasaParser.EPasaPattern, Tuple.Create("AccountNumber", "77"), Tuple.Create("ChecksumDelim", "-"), Tuple.Create("Checksum", "44"), Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "["), Tuple.Create("PayloadEndChar", "]"), Tuple.Create("ExtendedChecksum", "ffee"), Tuple.Create("ExtendedChecksumDelim", ":"));
-			//AssertEx.RegexMatch(@"(""hello world!"")", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "("), Tuple.Create("PayloadEndChar", ")"));
-			//AssertEx.RegexMatch(@"<""hello world!"">", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "<"), Tuple.Create("PayloadEndChar", ">"));
-			//AssertEx.RegexMatch(@"{""hello world!"":password}", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "{"), Tuple.Create("PayloadEndChar", "}"), Tuple.Create("PayloadPassword", "password"), Tuple.Create("PayloadPasswordDelim", ":"));
+			AssertEx.RegexMatch(@"(""hello world!"")", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "("), Tuple.Create("PayloadEndChar", ")"));
+			AssertEx.RegexMatch(@"<""hello world!"">", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "<"), Tuple.Create("PayloadEndChar", ">"));
+			AssertEx.RegexMatch(@"{""hello world!"":password}", RegexEPasaParser.PayloadPattern, Tuple.Create("PayloadContent", @"""hello world!"""), Tuple.Create("PayloadStartChar", "{"), Tuple.Create("PayloadEndChar", "}"), Tuple.Create("PayloadPassword", "password"), Tuple.Create("PayloadPasswordDelim", ":"));
 		}
 
 		[Test]

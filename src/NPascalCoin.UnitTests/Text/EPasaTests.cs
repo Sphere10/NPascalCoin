@@ -9,7 +9,7 @@ using NUnit.Framework.Internal;
 using Sphere10.Framework;
 
 namespace NPascalCoin.UnitTests.Text {
-	public abstract class IEPasaParserTests {
+	public abstract class EPasaTests {
 		[SetUp]
 		public void Setup() {
 		}
@@ -52,8 +52,6 @@ namespace NPascalCoin.UnitTests.Text {
 			Assert.IsFalse(parser.TryParse("77-444", out epasa));
 			Assert.IsFalse(parser.TryParse("77-4c", out epasa));
 		}
-
-
 
 		[Test]
 		public void AccountNumber_ExtendedChecksum() {

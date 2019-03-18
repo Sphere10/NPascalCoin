@@ -5,7 +5,7 @@ using NPascalCoin.Common.Text;
 using NPascalCoin.UnitTests;
 
 namespace NPascalCoin.UnitTests.Text {
-	public class RecursiveDescentEPasaParserTest : IEPasaParserTests {
+	public class RecursiveDescentEPasaParserTest : EPasaTests {
 		public override IEPasaParser NewInstance() {
 			return new RecursiveDescentEPasaParser();
 		}

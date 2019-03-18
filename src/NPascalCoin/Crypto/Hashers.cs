@@ -57,8 +57,12 @@ namespace NPascalCoin.Crypto {
 			WhirlpoolHashers = new ConcurrentStack<WhirlpoolDigest>();
 		}
 
-		public static uint MURMUR3_32(byte[] digest, uint seed) {
-			return (uint)digest.GetMurMurHash3((int)seed);
+		public static uint MURMUR3_32(byte[] bytes) {
+			return MURMUR3_32(bytes, 0);
+		}
+
+		public static uint MURMUR3_32(byte[] bytes, uint seed) {
+			return (uint)bytes.GetMurMurHash3((int)seed);
 		}
 
 		public static byte[] SHA2_256(byte[] bytes) {
