@@ -46,6 +46,16 @@ namespace NPascalCoin.UnitTests.Text {
 		}
 
 		[Test]
+		public void AccountNumber_0_10() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("0-10", out var epasa));
+			Assert.AreEqual(0, epasa.Account);
+			Assert.AreEqual(10, epasa.AccountChecksum);
+			Assert.AreEqual(EPasaHelper.ComputeExtendedChecksum("0-10"), epasa.ExtendedChecksum);
+			Assert.AreEqual(PayloadType.NonDeterministic, epasa.PayloadType);
+			Assert.AreEqual($"0-10:{EPasaHelper.ComputeExtendedChecksum("0-10")}", epasa.ToString());
+		}
+		[Test]
 		public void AccountNumber_Checksum_Illegal() {
 			var parser = NewInstance();
 			Assert.IsFalse(parser.TryParse("77- 44", out var epasa));
@@ -73,7 +83,6 @@ namespace NPascalCoin.UnitTests.Text {
 			var epasaText = "77-44:0000";
 			Assert.IsFalse(parser.TryParse(epasaText, out var epasa));
 		}
-
 
 		[Test]
 		public void AccountNumber_Payload_ExtendedChecksum() {
@@ -118,7 +127,6 @@ namespace NPascalCoin.UnitTests.Text {
 			Assert.AreEqual(PayloadType.NonDeterministic | PayloadType.AddressedByName, epasa.PayloadType);
 			Assert.AreEqual(epasaText, epasa.ToString());
 		}
-
 
 		[Test]
 		public void AccountName_Payload_ExtendedChecksum() {
