@@ -3,7 +3,7 @@
 		Success,
 		BadFormat,
 		BadChecksum,
-		AccountNumberTooLong,
+		InvalidAccountNumber,
 		AccountChecksumInvalid,
 		MismatchedPayloadEncoding,
 		PayloadTooLarge,

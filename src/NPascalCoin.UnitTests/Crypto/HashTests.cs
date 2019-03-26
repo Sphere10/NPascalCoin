@@ -53,7 +53,6 @@ namespace NPascalCoin.UnitTests.Crypto {
 			new TestItem<int, string> { Input= 200, Expected= "0x442b55fe"}
 		};
 
-
 		public TestItem<int, string>[] DATA_SHA2_256 =  {
 		// NOTE: Input denotes the number of bytes to take from DATA_BYTES when executing test
 			new TestItem<int, string> {Input= 17,  Expected= "0x0fd3f87ae8963c1ac8aabc0706d2ad5a66c2d88b50f57821b864b093263a7a05"},

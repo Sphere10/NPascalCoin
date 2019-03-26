@@ -19,7 +19,6 @@ namespace NPascalCoin.Common {
 		public const int MaxPublicBase58ContentLength = 348;
 		public const int MaxECIESBase58ContentLength = 196;
 		public const int MaxAESBase58ContentLength = 304;
-
 		public const uint ExtendedChecksumMurMur3Seed = 0;
 
 		public static string ComputeExtendedChecksum(string text) {

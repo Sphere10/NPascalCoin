@@ -21,10 +21,10 @@ namespace NPascalCoin.UnitTests.Text {
 			var parser = NewInstance();
 			Assert.IsTrue(parser.TryParse("77", out var epasa));
 			Assert.AreEqual(77, epasa.Account);
-			Assert.AreEqual(null, epasa.AccountChecksum);
-			Assert.AreEqual(null, epasa.ExtendedChecksum);
+			Assert.AreEqual(44, epasa.AccountChecksum);
+			Assert.AreEqual(EPasaHelper.ComputeExtendedChecksum("77-44"), epasa.ExtendedChecksum);
 			Assert.AreEqual(PayloadType.NonDeterministic, epasa.PayloadType);
-			Assert.AreEqual("77", epasa.ToString());
+			Assert.AreEqual($"77-44:{EPasaHelper.ComputeExtendedChecksum("77-44")}", epasa.ToString());
 		}
 
 		[Test]
@@ -40,9 +40,9 @@ namespace NPascalCoin.UnitTests.Text {
 			Assert.IsTrue(parser.TryParse("77-44", out var epasa));
 			Assert.AreEqual(77, epasa.Account);
 			Assert.AreEqual(44, epasa.AccountChecksum);
-			Assert.AreEqual(null, epasa.ExtendedChecksum);
+			Assert.AreEqual(EPasaHelper.ComputeExtendedChecksum("77-44"), epasa.ExtendedChecksum);
 			Assert.AreEqual(PayloadType.NonDeterministic, epasa.PayloadType);
-			Assert.AreEqual("77-44", epasa.ToString());
+			Assert.AreEqual($"77-44:{EPasaHelper.ComputeExtendedChecksum("77-44")}", epasa.ToString());
 		}
 
 		[Test]
@@ -56,40 +56,84 @@ namespace NPascalCoin.UnitTests.Text {
 		[Test]
 		public void AccountNumber_ExtendedChecksum() {
 			var parser = NewInstance();
-			Assert.IsTrue(parser.TryParse("77-44:12ab", out var epasa));
+			var epasaText = "77-44";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
 			Assert.AreEqual(77, epasa.Account);
 			Assert.AreEqual(44, epasa.AccountChecksum);
-			Assert.AreEqual(null, epasa.AccountChecksum);
-			Assert.AreEqual("12ab", epasa.ExtendedChecksum);
+			Assert.AreEqual(checksum, epasa.ExtendedChecksum);
 			Assert.AreEqual(PayloadType.NonDeterministic, epasa.PayloadType);
-			Assert.AreEqual("77-44:12ab", epasa.ToString());
+			Assert.AreEqual(epasaText, epasa.ToString());
 		}
 
 		[Test]
 		public void AccountNumber_ExtendedChecksum_Illegal() {
+			var parser = NewInstance();
+			var epasaText = "77-44:0000";
+			Assert.IsFalse(parser.TryParse(epasaText, out var epasa));
 		}
 
 
 		[Test]
 		public void AccountNumber_Payload_ExtendedChecksum() {
 			var parser = NewInstance();
-			Assert.IsTrue(parser.TryParse(@"77-44[""Hello World!""]:12ab", out var epasa));
+			var epasaText = @"77-44[""Hello World!""]";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
 			Assert.AreEqual(77, epasa.Account);
 			Assert.AreEqual(44, epasa.AccountChecksum);
-			Assert.AreEqual("12ab", epasa.ExtendedChecksum);
-			Assert.AreEqual("Hello World!", epasa.Payload);
+			Assert.AreEqual(checksum, epasa.ExtendedChecksum);
 			Assert.AreEqual(PayloadType.Public | PayloadType.AsciiFormatted, epasa.PayloadType);
-			Assert.AreEqual(@"77-44[""Hello World!""]:12ab", epasa.ToString());
+			Assert.AreEqual("Hello World!", epasa.Payload);
+			Assert.AreEqual(epasaText, epasa.ToString());
+		}
+
+		[Test]
+		public void AccountName() {
+			var parser = NewInstance();
+			var epasaText = "pascalcoin-foundation";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
+			Assert.AreEqual(null, epasa.Account);
+			Assert.AreEqual(null, epasa.AccountChecksum);
+			Assert.AreEqual("pascalcoin-foundation", epasa.AccountName);
+			Assert.AreEqual(checksum, epasa.ExtendedChecksum);
+			Assert.AreEqual(PayloadType.NonDeterministic | PayloadType.AddressedByName, epasa.PayloadType);
+			Assert.AreEqual($"{epasaText}:{checksum}", epasa.ToString());
+		}
+
+		[Test]
+		public void AccountName_ExtendedChecksum() {
+			var parser = NewInstance();
+			var epasaText = "pascalcoin-foundation";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
+			Assert.AreEqual(null, epasa.Account);
+			Assert.AreEqual(null, epasa.AccountChecksum);
+			Assert.AreEqual("pascalcoin-foundation", epasa.AccountName);
+			Assert.AreEqual(checksum, epasa.ExtendedChecksum);
+			Assert.AreEqual(PayloadType.NonDeterministic | PayloadType.AddressedByName, epasa.PayloadType);
+			Assert.AreEqual(epasaText, epasa.ToString());
 		}
 
 
 		[Test]
-		public void AccountNumberWithChecksum() {
+		public void AccountName_Payload_ExtendedChecksum() {
 			var parser = NewInstance();
-			Assert.IsTrue(parser.TryParse("77-44", out var epasa));
-			Assert.AreEqual(77, epasa.Account);
-			Assert.AreEqual(44, epasa.AccountChecksum);
-			Assert.AreEqual("77-44", epasa.ToString());
+			var epasaText = @"pascalcoin-foundation[""Hello World!""]";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
+			Assert.AreEqual(null, epasa.Account);
+			Assert.AreEqual(null, epasa.AccountChecksum);
+			Assert.AreEqual("pascalcoin-foundation", epasa.AccountName);
+			Assert.AreEqual(checksum, epasa.ExtendedChecksum);
+			Assert.AreEqual(PayloadType.Public | PayloadType.AsciiFormatted | PayloadType.AddressedByName, epasa.PayloadType);
+			Assert.AreEqual("Hello World!", epasa.Payload);
+			Assert.AreEqual(epasaText, epasa.ToString());
 		}
 
 	}

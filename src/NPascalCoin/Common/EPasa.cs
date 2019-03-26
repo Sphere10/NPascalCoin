@@ -76,9 +76,9 @@ namespace NPascalCoin.Common {
 
 			var payloadContent = string.Empty;
 			if (PayloadType.HasFlag(PayloadType.AsciiFormatted)) {
-				payloadContent = $@"""{PascalAsciiEncoding.Escape(Payload)}]""";
+				payloadContent = $@"""{PascalAsciiEncoding.Escape(Payload)}""";
 			} else if (PayloadType.HasFlag(PayloadType.HexFormatted)) {
-				payloadContent = $@"0x{Payload}]";
+				payloadContent = $@"0x{Payload}";
 			} else if (PayloadType.HasFlag(PayloadType.Base58Formatted)) {
 				payloadContent = $"{Payload}";
 			} else {

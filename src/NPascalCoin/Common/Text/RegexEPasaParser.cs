@@ -69,25 +69,29 @@ namespace NPascalCoin.Common.Text {
 				}
 				epasa.PayloadType = epasa.PayloadType | PayloadType.AddressedByName;
 				epasa.AccountName = accountName;
+				epasa.Account = epasa.AccountChecksum = null;
 			} else {
 				// Account Number
 				if (!uint.TryParse(accountNumber, out var accNo)) {
-					errorCode = EPasaErrorCode.AccountNumberTooLong;
+					errorCode = EPasaErrorCode.InvalidAccountNumber;
 					return false;
 				}
 				epasa.Account = accNo;
+				var actualAccountChecksum = AccountHelper.CalculateAccountChecksum(accNo);
 
 				if (checksumDelim != null) {
+					// validate account checksum
 					if (!uint.TryParse(accountChecksum, out var accChecksum)) {
 						errorCode = EPasaErrorCode.AccountChecksumInvalid;
 						return false;
 					}
-					if (!AccountHelper.IsValidAccountChecksum(epasa.Account.Value, accChecksum)) {
+					if (accChecksum != actualAccountChecksum) {
 						errorCode = EPasaErrorCode.BadChecksum;
 						return false;
 					}
-					epasa.AccountChecksum = accChecksum;
 				}
+				epasa.AccountChecksum = actualAccountChecksum;
+
 			}
 
 			// Encryption type			
@@ -153,7 +157,6 @@ namespace NPascalCoin.Common.Text {
 					epasa.PayloadType = epasa.PayloadType | PayloadType.Base58Formatted;
 					epasa.Payload = payloadContent;
 				} 
-				epasa.Payload = payloadContent;
 			}
 
 			// Payload Lengths
@@ -163,17 +166,14 @@ namespace NPascalCoin.Common.Text {
 			}
 
 			// Extended Checksum
+			var actualChecksum = EPasaHelper.ComputeExtendedChecksum(epasa.ToString(true));
 			if (extendedChecksumDelim != null) {
-				if (checksumDelim == null) {
-					errorCode = EPasaErrorCode.MissingAccountChecksum;
-					return false;
-				}
-				if (!EPasaHelper.IsValidExtendedChecksum(epasa.ToString(true), extendedChecksum)) {
+				if (extendedChecksum != actualChecksum) {
 					errorCode = EPasaErrorCode.BadExtendedChecksum;
 					return false;
 				}
-				epasa.ExtendedChecksum = extendedChecksum;
 			}
+			epasa.ExtendedChecksum = actualChecksum;
 			return true;
 		}
 		
