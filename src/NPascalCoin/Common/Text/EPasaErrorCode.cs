@@ -5,11 +5,12 @@
 		BadChecksum,
 		InvalidAccountNumber,
 		AccountChecksumInvalid,
+		InvalidAccountName,
 		MismatchedPayloadEncoding,
 		PayloadTooLarge,
 		MissingPassword,
 		UnusedPassword,
-		MissingAccountChecksum,
-		BadExtendedChecksum
+		InvalidPassword,
+		BadExtendedChecksum,				
 	}
 }

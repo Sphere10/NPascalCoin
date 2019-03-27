@@ -17,7 +17,7 @@ namespace NPascalCoin.Common.Text {
 		public const string Pascal64StartCharPattern = @"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|!|@|#|\$|%|\^|&|\*|\\\(|\\\)|-|\+|\\\{|\\\}|\\\[|\\]|_|\\:|\\""|`|\||\\<|\\>|,|\.|\?|/|~)";
 		public const string Pascal64NextCharPattern = @"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|0|1|2|3|4|5|6|7|8|9|!|@|#|\$|%|\^|&|\*|\\\(|\\\)|-|\+|\\\{|\\\}|\\\[|\\]|_|\\:|\\""|`|\||\\<|\\>|,|\.|\?|/|~)";
 		public const string Pascal64StringPattern = Pascal64StartCharPattern + Pascal64NextCharPattern + "{2,63}";
-		public const string Pascal64StringOnlyPattern = Pascal64StartCharPattern + Pascal64NextCharPattern + "{2,63}$";
+		public const string Pascal64StringOnlyPattern = Pascal64StringPattern + "$";
 		private static readonly Regex SafePascal64Regex;
 
 		static Pascal64Encoding() {
@@ -25,7 +25,10 @@ namespace NPascalCoin.Common.Text {
 		}
 
 		public static bool IsValidUnescaped(string unescapedPascal64String) {
-			return unescapedPascal64String.All(c => Pascal64CharSet.Contains(c));
+			return 
+				3 <= unescapedPascal64String.Length && unescapedPascal64String.Length <= 64 &&
+				Pascal64StartCharPattern.Contains(unescapedPascal64String[0]) &&
+				unescapedPascal64String.All(c => Pascal64CharSet.Contains(c));
 		}
 
 		public static bool IsValidEscaped(string escapedPascal64String) {

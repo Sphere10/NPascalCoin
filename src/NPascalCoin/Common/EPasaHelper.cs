@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NPascalCoin.Common;
+using NPascalCoin.Common.Text;
 using NPascalCoin.Crypto;
 using Sphere10.Framework;
 
@@ -39,7 +40,7 @@ namespace NPascalCoin.Common {
 
 			if (payloadType.HasFlag(PayloadType.Public)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length <= MaxPublicAsciiContentLength;
+					return PascalAsciiEncoding.Unescape(payloadContent).Length <= MaxPublicAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
@@ -56,7 +57,7 @@ namespace NPascalCoin.Common {
 
 			if (payloadType.HasFlag(PayloadType.SenderKeyEncrypted) || payloadType.HasFlag(PayloadType.RecipientKeyEncrypted)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length <= MaxECIESAsciiContentLength;
+					return PascalAsciiEncoding.Unescape(payloadContent).Length <= MaxECIESAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
@@ -73,7 +74,7 @@ namespace NPascalCoin.Common {
 
 			if (payloadType.HasFlag(PayloadType.PasswordEncrypted)) {
 				if (payloadType.HasFlag(PayloadType.AsciiFormatted)) {
-					return payloadContent.Length <= MaxAESAsciiContentLength;
+					return PascalAsciiEncoding.Unescape(payloadContent).Length <= MaxAESAsciiContentLength;
 				}
 
 				if (payloadType.HasFlag(PayloadType.HexFormatted)) {
@@ -90,6 +91,11 @@ namespace NPascalCoin.Common {
 
 			// unknown encryption format
 			return false;
+		}
+
+		public static bool IsValidPasswordLength(string passwordValue) {
+			// no password length policy established (only client-side concern)
+			return true;
 		}
 	}
 }

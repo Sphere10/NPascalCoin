@@ -190,12 +190,13 @@ namespace NPascalCoin.Common.Text {
 						Value = string.Empty
 					};
 					if (!IsStartChar(expectedToken, reader.PeekChar())) {
-						error = EPasaErrorCode.BadFormat;
+						// first character is a non-character, assume empty string
 						return result;
 					}
+					var escapedValue = string.Empty;
 					do {
 						if (reader.PeekChar() == GetEscapeChar(expectedToken)) {
-							reader.ReadChar();
+							escapedValue += reader.ReadChar();
 							if (!IsEscapedChar(expectedToken, reader.PeekChar())) {
 								error = EPasaErrorCode.BadFormat; // illegal escape sequence
 								return result;
@@ -205,8 +206,9 @@ namespace NPascalCoin.Common.Text {
 							// assume end of token
 							break;
 						}
-						((ValueNode)result).Value = ((ValueNode)result).Value + reader.ReadChar();
+						escapedValue += reader.ReadChar();
 					} while (IsValidValueChar(expectedToken, reader.PeekChar()));
+					((ValueNode)result).Value = escapedValue;
 					break;
 				case TokenType.HexString:
 				case TokenType.Base58String:
@@ -323,7 +325,9 @@ namespace NPascalCoin.Common.Text {
 			EPasaErrorCode TryCompileAccount(AccountNode accountNode) {
 				switch (accountNode.Type) {
 					case TokenType.AccountName:
-						epasa.AccountName = accountNode.Name.Value;
+						if (!Pascal64Encoding.IsValidEscaped(accountNode.Name.Value))
+							return EPasaErrorCode.InvalidAccountName;
+						epasa.AccountName = Pascal64Encoding.Unescape(accountNode.Name.Value);
 						epasa.PayloadType = epasa.PayloadType.SetFlags(PayloadType.AddressedByName);
 						break;
 					case TokenType.AccountNumber:
@@ -354,23 +358,28 @@ namespace NPascalCoin.Common.Text {
 					switch (payloadNode.Content.Type) {
 						case TokenType.PascalAsciiString:
 							epasa.PayloadType = epasa.PayloadType | PayloadType.AsciiFormatted;
+							epasa.Payload = PascalAsciiEncoding.Unescape(payloadNode.Content.Value);
 							break;
 						case TokenType.Base58String:
 							epasa.PayloadType = epasa.PayloadType | PayloadType.Base58Formatted;
+							epasa.Payload = payloadNode.Content.Value;
 							break;
 						case TokenType.HexString:
 							epasa.PayloadType = epasa.PayloadType | PayloadType.HexFormatted;
+							epasa.Payload = payloadNode.Content.Value;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException(nameof(payloadNode.Content.Type));
-					}
-					epasa.Payload = payloadNode.Content.Value;
+					}					
 					if (!EPasaHelper.IsValidPayloadLength(epasa.PayloadType, epasa.Payload)) {
 						return EPasaErrorCode.PayloadTooLarge;
 					}
 				}
 				if (payloadNode.Password != null) {
-					epasa.Password = payloadNode.Password.Value;
+					if (!EPasaHelper.IsValidPasswordLength(payloadNode.Password.Value)) {
+						return EPasaErrorCode.InvalidPassword;
+					}
+					epasa.Password = PascalAsciiEncoding.Unescape(payloadNode.Password.Value);
 				}
 				return EPasaErrorCode.Success;
 			}
