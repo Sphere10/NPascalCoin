@@ -16,26 +16,26 @@ namespace NPascalCoin.UnitTests.Text {
 
 		[Test]
 		public void PascalAsciiCharPattern_Unescaped() {
-			foreach (var ch in PascalAsciiEncoding.PascalAsciiCharSetUnescaped)
-				AssertEx.RegexMatch($"{ch}", PascalAsciiEncoding.PascalAsciiCharPattern);
+			foreach (var ch in PascalAsciiEncoding.CharSetUnescaped)
+				AssertEx.RegexMatch($"{ch}", PascalAsciiEncoding.CharPattern);
 		}
 
 		[Test]
 		public void PascalAsciiCharPattern_Escaped() {
-			foreach (var ch in PascalAsciiEncoding.PascalAsciiCharSetEscaped)
-				AssertEx.RegexMatch($@"\{ch}", PascalAsciiEncoding.PascalAsciiCharPattern);
+			foreach (var ch in PascalAsciiEncoding.CharSetEscaped)
+				AssertEx.RegexMatch($@"\{ch}", PascalAsciiEncoding.CharPattern);
 		}
 
 		[Test]
 		public void PascalAsciiCharPattern_IllegalEscape() {
-			foreach (var ch in PascalAsciiEncoding.PascalAsciiCharSetUnescaped)
-				AssertEx.RegexNotMatch($"{PascalAsciiEncoding.EscapeChar}{ch}", PascalAsciiEncoding.PascalAsciiCharPattern);
+			foreach (var ch in PascalAsciiEncoding.CharSetUnescaped)
+				AssertEx.RegexNotMatch($"{PascalAsciiEncoding.EscapeChar}{ch}", PascalAsciiEncoding.CharPattern);
 		}
 
 		[Test]
 		public void PascalAsciiCharPattern_MissingEscape() {
-			foreach (var ch in PascalAsciiEncoding.PascalAsciiCharSetEscaped)
-				AssertEx.RegexNotMatch($"{ch}", PascalAsciiEncoding.PascalAsciiCharPattern);
+			foreach (var ch in PascalAsciiEncoding.CharSetEscaped)
+				AssertEx.RegexNotMatch($"{ch}", PascalAsciiEncoding.CharPattern);
 		}
 
 		[Test]
@@ -43,10 +43,10 @@ namespace NPascalCoin.UnitTests.Text {
 			var illegalCharSet = Enumerable
 				.Range(0, 255)
 				.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
-				.Where(c => !PascalAsciiEncoding.PascalAsciiCharSet.Contains(c));
+				.Where(c => !PascalAsciiEncoding.CharSet.Contains(c));
 
 			foreach (var ch in illegalCharSet)
-				AssertEx.RegexNotMatch($"{ch}", PascalAsciiEncoding.PascalAsciiCharPattern);
+				AssertEx.RegexNotMatch($"{ch}", PascalAsciiEncoding.CharPattern);
 		}
 
 		#endregion
@@ -55,30 +55,30 @@ namespace NPascalCoin.UnitTests.Text {
 
 		[Test]
 		public void PascalAsciiStringPattern_Unescaped() {
-			AssertEx.RegexMatch(PascalAsciiEncoding.PascalAsciiCharSetUnescaped, PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexMatch(PascalAsciiEncoding.CharSetUnescaped, PascalAsciiEncoding.StringPattern);
 		}
 
 		[Test]
 		public void PascalAsciiStringPattern_Escaped() {
 			var input = @"proper\\escape";
-			AssertEx.RegexMatch(input, PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexMatch(input, PascalAsciiEncoding.StringPattern);
 		}
 
 		[Test]
 		public void PascalAsciiStringPattern_FullCharSet_Escaped() {
-			AssertEx.RegexMatch(PascalAsciiEncoding.Escape(PascalAsciiEncoding.PascalAsciiCharSet), PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexMatch(PascalAsciiEncoding.Escape(PascalAsciiEncoding.CharSet), PascalAsciiEncoding.StringPattern);
 		}
 
 		[Test]
 		public void PascalAsciiStringPattern_IllegalEscape() {
 			var badInput = @"illegal\escape";
-			AssertEx.RegexNotMatch(badInput, PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexNotMatch(badInput, PascalAsciiEncoding.StringPattern);
 		}
 
 		[Test]
 		public void PascalAsciiStringPattern_MissingEscape() {
 			var badInput = @"missing[]escape";
-			AssertEx.RegexNotMatch(badInput, PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexNotMatch(badInput, PascalAsciiEncoding.StringPattern);
 		}
 
 		[Test]
@@ -87,12 +87,12 @@ namespace NPascalCoin.UnitTests.Text {
 				Enumerable
 					.Range(0, 255)
 					.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
-					.Where(c => !PascalAsciiEncoding.PascalAsciiCharSet.Contains(c))
+					.Where(c => !PascalAsciiEncoding.CharSet.Contains(c))
 					.ToDelimittedString(string.Empty);
 
-			AssertEx.RegexNotMatch(illegalCharSet, PascalAsciiEncoding.PascalAsciiStringPattern);
-			AssertEx.RegexNotMatch(PascalAsciiEncoding.PascalAsciiCharSetUnescaped + illegalCharSet, PascalAsciiEncoding.PascalAsciiStringPattern);
-			AssertEx.RegexNotMatch(illegalCharSet + PascalAsciiEncoding.PascalAsciiCharSetUnescaped, PascalAsciiEncoding.PascalAsciiStringPattern);
+			AssertEx.RegexNotMatch(illegalCharSet, PascalAsciiEncoding.StringPattern);
+			AssertEx.RegexNotMatch(PascalAsciiEncoding.CharSetUnescaped + illegalCharSet, PascalAsciiEncoding.StringPattern);
+			AssertEx.RegexNotMatch(illegalCharSet + PascalAsciiEncoding.CharSetUnescaped, PascalAsciiEncoding.StringPattern);
 		}
 
 		#endregion

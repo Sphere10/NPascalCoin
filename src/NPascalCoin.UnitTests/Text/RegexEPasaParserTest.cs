@@ -36,8 +36,8 @@ namespace NPascalCoin.UnitTests.Text {
 
 		[Test]
 		public void HexNibble_Valid() {
-			foreach (var ch in HexEncoding.HexStringCharSet)
-				AssertEx.RegexMatch($"{ch}", HexEncoding.HexNibblePattern);
+			foreach (var ch in HexEncoding.CharSet)
+				AssertEx.RegexMatch($"{ch}", HexEncoding.NibblePattern);
 		}
 
 		[Test]
@@ -45,32 +45,32 @@ namespace NPascalCoin.UnitTests.Text {
 			var illegalCharSet = Enumerable
 				.Range(0, 255)
 				.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
-				.Where(c => !HexEncoding.HexStringCharSet.Contains(c));
+				.Where(c => !HexEncoding.CharSet.Contains(c));
 
 			foreach (var ch in illegalCharSet)
-				AssertEx.RegexNotMatch($"{ch}", HexEncoding.HexNibblePattern);
+				AssertEx.RegexNotMatch($"{ch}", HexEncoding.NibblePattern);
 		}
 
 		[Test]
 		public void HexByte_Valid() {
-			foreach (var n1 in HexEncoding.HexStringCharSet)
-				foreach (var n2 in HexEncoding.HexStringCharSet)
-					AssertEx.RegexMatch($"{n1}{n2}", HexEncoding.HexBytePattern);
+			foreach (var n1 in HexEncoding.CharSet)
+				foreach (var n2 in HexEncoding.CharSet)
+					AssertEx.RegexMatch($"{n1}{n2}", HexEncoding.BytePattern);
 		}
 
 		[Test]
 		public void HexByte_TooShort() {
-			AssertEx.RegexNotMatch("f", HexEncoding.HexBytePattern);
+			AssertEx.RegexNotMatch("f", HexEncoding.BytePattern);
 		}
 
 		[Test]
 		public void HexByte_TooLong() {
-			AssertEx.RegexNotMatch("abf", HexEncoding.HexBytePattern);
+			AssertEx.RegexNotMatch("abf", HexEncoding.BytePattern);
 		}
 
 		[Test]
 		public void HexString_FullCharSet() {
-			AssertEx.RegexMatch(HexEncoding.HexStringCharSet, HexEncoding.HexStringPattern);
+			AssertEx.RegexMatch(HexEncoding.CharSet, HexEncoding.SubStringPattern);
 		}
 
 		#endregion

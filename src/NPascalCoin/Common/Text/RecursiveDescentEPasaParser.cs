@@ -254,15 +254,15 @@ namespace NPascalCoin.Common.Text {
 				case TokenType.PayloadContent:
 					return c.IsIn('0', '"') || IsStartChar(TokenType.Base58String, c);
 				case TokenType.ExtendedChecksum:
-					return HexEncoding.HexStringCharSet.Contains($"{c}");
+					return HexEncoding.CharSet.Contains($"{c}");
 				case TokenType.Number:
 					return char.IsDigit(c);
 				case TokenType.PascalAsciiString:
-					return PascalAsciiEncoding.PascalAsciiCharSetUnescaped.Contains($"{c}") || c == PascalAsciiEncoding.EscapeChar;
+					return PascalAsciiEncoding.CharSetUnescaped.Contains($"{c}") || c == PascalAsciiEncoding.EscapeChar;
 				case TokenType.Pascal64String:
-					return Pascal64Encoding.Pascal64CharSetStart.Contains($"{c}") || c == Pascal64Encoding.EscapeChar;
+					return Pascal64Encoding.CharSetStart.Contains($"{c}") || c == Pascal64Encoding.EscapeChar;
 				case TokenType.HexString:
-					return HexEncoding.HexStringCharSet.Contains($"{c}");
+					return HexEncoding.CharSet.Contains($"{c}");
 				case TokenType.Base58String:
 					return PascalBase58Encoding.CharSet.Contains($"{c}");
 				default:
@@ -286,11 +286,11 @@ namespace NPascalCoin.Common.Text {
 				case TokenType.Number:
 					return char.IsDigit(c);
 				case TokenType.PascalAsciiString:
-					return PascalAsciiEncoding.PascalAsciiCharSet.Contains(c.ToString()) || c == PascalAsciiEncoding.EscapeChar;
+					return PascalAsciiEncoding.CharSet.Contains(c.ToString()) || c == PascalAsciiEncoding.EscapeChar;
 				case TokenType.Pascal64String:
-					return Pascal64Encoding.Pascal64CharSet.Contains(c.ToString()) || c == Pascal64Encoding.EscapeChar;
+					return Pascal64Encoding.CharSet.Contains(c.ToString()) || c == Pascal64Encoding.EscapeChar;
 				case TokenType.HexString:
-					return HexEncoding.HexStringCharSet.Contains(c.ToString());
+					return HexEncoding.CharSet.Contains(c.ToString());
 				case TokenType.Base58String:
 					return PascalBase58Encoding.CharSet.Contains(c.ToString());
 				default:
@@ -313,9 +313,9 @@ namespace NPascalCoin.Common.Text {
 				return false;
 			switch (token) {
 				case TokenType.PascalAsciiString:
-					return PascalAsciiEncoding.PascalAsciiCharSetEscaped.Contains((char)c);
+					return PascalAsciiEncoding.CharSetEscaped.Contains((char)c);
 				case TokenType.Pascal64String:
-					return Pascal64Encoding.Pascal64CharSetEscaped.Contains((char)c);
+					return Pascal64Encoding.CharSetEscaped.Contains((char)c);
 			}
 			throw new ArgumentOutOfRangeException(nameof(token), token, null);
 		}

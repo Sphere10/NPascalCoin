@@ -9,16 +9,16 @@ using Sphere10.Framework;
 
 namespace NPascalCoin.Common.Text {
 	public class HexEncoding {
-		public const string HexStringCharSet = "0123456789abcdef";
-		public const string HexNibblePattern = @"[0-9a-f]";
-		public const string HexBytePattern = HexNibblePattern + "{2}";
-		public const string HexStringPattern = "(?:" + HexBytePattern + ")+";
-		public const string ExclusiveStringPattern = "(?:" + HexBytePattern + ")+$";
+		public const string CharSet = "0123456789abcdef";
+		public const string NibblePattern = @"[0-9a-f]";
+		public const string BytePattern = NibblePattern + "{2}";
+		public const string SubStringPattern = "(?:" + BytePattern + ")+";
+		public const string StringPattern = SubStringPattern + "$";
 
 		private static readonly Regex HexStringRegex;
 
 		static HexEncoding() {
-			HexStringRegex = new Regex(ExclusiveStringPattern);
+			HexStringRegex = new Regex(StringPattern);
 		}
 
 		public static bool IsValid(string hexString) {

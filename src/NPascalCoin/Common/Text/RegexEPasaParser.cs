@@ -12,19 +12,19 @@ namespace NPascalCoin.Common.Text {
 		// note: epasa syntax escapes following chars: :\"[]()<>(){}
 		// note: c-sharp syntax verbatim strings escape: " as ""
 		public const string IntegerPattern = @"(0|[1-9]\d+)";
-		public const string AccountNamePattern = @"(?<AccountName>" + Pascal64Encoding.Pascal64StringPattern + ")";
+		public const string AccountNamePattern = @"(?<AccountName>" + Pascal64Encoding.StringPattern + ")";
 		public const string AccountChecksumPattern = @"(?:(?<ChecksumDelim>-)(?<Checksum>\d{2}))?";
 		public const string AccountNumberPattern = "(?<AccountNumber>" + IntegerPattern + ")" + AccountChecksumPattern ;
 		public const string PasaPattern = "(" + AccountNumberPattern + "|" + AccountNamePattern + ")";
-		public const string ASCIIContentPattern = @"""" + PascalAsciiEncoding.PascalAsciiStringPattern + @"""";
-		public const string HexContentPattern = "0x" + HexEncoding.HexStringPattern;
+		public const string ASCIIContentPattern = @"""" + PascalAsciiEncoding.StringPattern + @"""";
+		public const string HexContentPattern = "0x" + HexEncoding.SubStringPattern;
 		public const string Base58ContentPattern = PascalBase58Encoding.SubStringPattern;
-		public const string PayloadPasswordPattern = "(?:(?<PayloadPasswordDelim>" + ":){1}(?<PayloadPassword>" + PascalAsciiEncoding.PascalAsciiStringPattern + ")?)?";
+		public const string PayloadPasswordPattern = "(?:(?<PayloadPasswordDelim>" + ":){1}(?<PayloadPassword>" + PascalAsciiEncoding.StringPattern + ")?)?";
 		public const string PayloadStartCharPattern = @"(?<PayloadStartChar>[\[\(<\{])";
 		public const string PayloadEndCharPattern = @"(?<PayloadEndChar>[]\)>\}])";
 		public const string PayloadContentPattern = "(?<PayloadContent>" + ASCIIContentPattern + "|" + HexContentPattern + "|" + Base58ContentPattern + ")?";
 		public const string PayloadPattern = "(?:" + PayloadStartCharPattern + PayloadContentPattern + PayloadPasswordPattern + PayloadEndCharPattern + ")?";
-		public const string ExtendedChecksumPattern = "(?:" + "(?<ExtendedChecksumDelim>:)" + "(?<ExtendedChecksum>" + HexEncoding.HexBytePattern + HexEncoding.HexBytePattern +"))?";
+		public const string ExtendedChecksumPattern = "(?:" + "(?<ExtendedChecksumDelim>:)" + "(?<ExtendedChecksum>" + HexEncoding.BytePattern + HexEncoding.BytePattern +"))?";
 		public const string EPasaPattern = PasaPattern + PayloadPattern + ExtendedChecksumPattern;
 
 		private static readonly Regex _epasaRegex;
