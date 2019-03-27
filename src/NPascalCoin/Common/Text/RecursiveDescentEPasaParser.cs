@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using NPascalCoin.API.Classic.Objects;
-using NPascalCoin.Common;
 using Sphere10.Framework;
-
 
 namespace NPascalCoin.Common.Text {
 
@@ -72,8 +67,10 @@ namespace NPascalCoin.Common.Text {
 
 			if (prefix != null)
 				foreach (var prefixChar in prefix)
-					if (!SkipChar(reader, ref error, prefixChar))
+					if (!reader.MatchChar(prefixChar)) {
+						error = EPasaErrorCode.BadFormat;
 						return null;
+					}
 
 			switch (expectedToken) {
 				case TokenType.EPASA:
@@ -83,12 +80,16 @@ namespace NPascalCoin.Common.Text {
 						Payload = TryParseEPasaInternal(TokenType.Payload, reader, ref error) as PayloadNode,
 						ExtendedChecksum = TryParseEPasaInternal(TokenType.ExtendedChecksum, reader, ref error) as ValueNode
 					};
-					SkipChar(reader, ref error, null as char?); // match end-of-string
+					if (!reader.MatchChar(null as char?)) {
+						// match end-of-string
+						error = EPasaErrorCode.BadFormat;
+						return null;
+					} 
 					break;
 				case TokenType.PASA:
-					if (IsStartChar(TokenType.AccountNumber, NextChar(reader))) {
+					if (IsStartChar(TokenType.AccountNumber, reader.PeekChar())) {
 						result = TryParseEPasaInternal(TokenType.AccountNumber, reader, ref error);
-					} else if (IsStartChar(TokenType.AccountName, NextChar(reader))) {
+					} else if (IsStartChar(TokenType.AccountName, reader.PeekChar())) {
 						result = TryParseEPasaInternal(TokenType.AccountName, reader, ref error);
 					} else {
 						error = EPasaErrorCode.InvalidAccountNumber;
@@ -108,17 +109,17 @@ namespace NPascalCoin.Common.Text {
 					};
 					break;
 				case TokenType.Checksum:
-					if (IsStartChar(TokenType.Checksum, NextChar(reader)))
+					if (IsStartChar(TokenType.Checksum, reader.PeekChar()))
 						result = TryParseEPasaInternal(TokenType.Number, reader, ref error, prefix: "-") as ValueNode;
 					break;
 				case TokenType.Payload:
-					if (IsStartChar(TokenType.Payload, NextChar(reader))) {
+					if (IsStartChar(TokenType.Payload, reader.PeekChar())) {
 						result = new PayloadNode {
 							Type = TokenType.Payload
 						};
-						var payloadOpenChar = ReadChar(reader);
+						var payloadOpenChar = reader.ReadChar();
 						((PayloadNode)result).Content = TryParseEPasaInternal(TokenType.PayloadContent, reader, ref error) as ValueNode;
-						if (NextChar(reader) == ':') {
+						if (reader.PeekChar() == ':') {
 							if (payloadOpenChar != '{') {
 								error = EPasaErrorCode.UnusedPassword;
 								return result;
@@ -126,12 +127,12 @@ namespace NPascalCoin.Common.Text {
 							((PayloadNode)result).Password = TryParseEPasaInternal(TokenType.PascalAsciiString, reader, ref error, prefix: ":") as ValueNode;
 						} else if (payloadOpenChar == '{') {
 							error = EPasaErrorCode.MissingPassword;
-							return result;
+							return null;
 						}
-						var payloadEndChar = NextChar(reader);
+						var payloadEndChar = reader.PeekChar();
 						if (!payloadEndChar.IsIn(']', ')', '>', '}')) {
 							error = EPasaErrorCode.BadFormat;
-							return result;
+							return null;
 						}
 						char? expectedEndChar = null;
 						switch (payloadOpenChar) {
@@ -154,16 +155,19 @@ namespace NPascalCoin.Common.Text {
 							default:
 								throw new InternalErrorException("Implementation Error");
 						}
-						if (NextChar(reader) != expectedEndChar) {
+						if (reader.PeekChar() != expectedEndChar) {
 							error = EPasaErrorCode.MismatchedPayloadEncoding;
-							return result;
+							return null;
 						}
 
-						SkipChar(reader, ref error, ']', ')', '>', '}');
+						if (!reader.MatchChar(']', ')', '>', '}')) {
+							error = EPasaErrorCode.BadFormat;
+							return null;
+						}
 					}
 					break;
 				case TokenType.PayloadContent:
-					var contentStartChar = NextChar(reader);
+					var contentStartChar = reader.PeekChar();
 					if (contentStartChar == '"') {
 						result = TryParseEPasaInternal(TokenType.PascalAsciiString, reader, ref error, prefix: "\"", postFix: "\"") as ValueNode;
 					} else if (IsStartChar(TokenType.HexString, contentStartChar)) {
@@ -175,7 +179,7 @@ namespace NPascalCoin.Common.Text {
 					}
 					break;
 				case TokenType.ExtendedChecksum:
-					if (NextChar(reader) == ':') {
+					if (reader.PeekChar() == ':') {
 						result = TryParseEPasaInternal(TokenType.HexString, reader, ref error, prefix: ":") as ValueNode;
 					}
 					break;
@@ -183,36 +187,36 @@ namespace NPascalCoin.Common.Text {
 				case TokenType.Pascal64String:
 					result = new ValueNode {
 						Type = expectedToken,
-						Value = null
+						Value = string.Empty
 					};
-					if (!IsStartChar(expectedToken, NextChar(reader))) {
+					if (!IsStartChar(expectedToken, reader.PeekChar())) {
 						error = EPasaErrorCode.BadFormat;
 						return result;
 					}
 					do {
-						if (NextChar(reader) == GetEscapeChar(expectedToken)) {
-							ReadChar(reader);
-							if (!IsEscapedChar(expectedToken, NextChar(reader))) {
+						if (reader.PeekChar() == GetEscapeChar(expectedToken)) {
+							reader.ReadChar();
+							if (!IsEscapedChar(expectedToken, reader.PeekChar())) {
 								error = EPasaErrorCode.BadFormat; // illegal escape sequence
 								return result;
 							}
-						} else if (IsEscapedChar(expectedToken, NextChar(reader))) {
+						} else if (IsEscapedChar(expectedToken, reader.PeekChar())) {
 							// encountered a character that needs escaping
-							// assume end of string
+							// assume end of token
 							break;
 						}
-						((ValueNode)result).Value = (((ValueNode)result).Value ?? string.Empty) + ReadChar(reader);
-					} while (IsValidValueChar(expectedToken, NextChar(reader)));
+						((ValueNode)result).Value = ((ValueNode)result).Value + reader.ReadChar();
+					} while (IsValidValueChar(expectedToken, reader.PeekChar()));
 					break;
 				case TokenType.HexString:
 				case TokenType.Base58String:
 				case TokenType.Number:
 					result = new ValueNode {
 						Type = expectedToken,
-						Value = null
+						Value = string.Empty
 					};
-					while (IsValidValueChar(expectedToken, NextChar(reader))) {
-						((ValueNode)result).Value = (((ValueNode)result).Value ?? string.Empty) + ReadChar(reader);
+					while (IsValidValueChar(expectedToken, reader.PeekChar())) {
+						((ValueNode)result).Value = ((ValueNode)result).Value + reader.ReadChar();
 					}
 					break;
 				default:
@@ -220,47 +224,13 @@ namespace NPascalCoin.Common.Text {
 			}
 			if (error == EPasaErrorCode.Success && postFix != null)
 				foreach (var postfixChar in postFix)
-					if (!SkipChar(reader, ref error, postfixChar))
+					if (!reader.MatchChar(postfixChar)) {
+						error = EPasaErrorCode.BadFormat;
 						return null;
+					}
 			return result;
 		}
 
-		private char? NextChar(TextReader reader) {
-			var nextValue = reader.Peek();
-			if (nextValue == -1)
-				return null;
-			return (char)nextValue;
-		}
-
-		private char? ReadChar(TextReader reader) {
-			var nextValue = reader.Peek();
-			if (nextValue == -1) {
-				return null;
-			}
-			reader.Read();
-			return (char)nextValue;
-		}
-
-		private bool SkipChar(TextReader reader, ref EPasaErrorCode error, params char?[] characters) {
-			if (error != EPasaErrorCode.Success)
-				return false;
-			var nextValue = reader.Peek();
-			if (nextValue == -1) {
-				if (characters.Any(c => c == null)) {
-					return true;
-				}
-				error = EPasaErrorCode.BadFormat;
-				return false;
-			}
-
-			if (!characters.Contains((char)nextValue)) {
-				error = EPasaErrorCode.BadFormat;
-				return false;
-			}
-
-			reader.Read();
-			return true;
-		}
 
 		private bool IsStartChar(TokenType token, char? character) {
 			if (character == null)
@@ -274,7 +244,7 @@ namespace NPascalCoin.Common.Text {
 				case TokenType.AccountName:
 					return IsStartChar(TokenType.Pascal64String, c);
 				case TokenType.AccountNumber:
-					return char.IsDigit((char)c) && c != '0';
+					return char.IsDigit((char)c);
 				case TokenType.Checksum:
 					return c == '-';
 				case TokenType.Payload:
@@ -359,6 +329,9 @@ namespace NPascalCoin.Common.Text {
 					case TokenType.AccountNumber:
 						if (!uint.TryParse(accountNode.AccountNo.Value, out var accNo))
 							return EPasaErrorCode.BadFormat;
+						if (accountNode.AccountNo.Value.StartsWith("0") && accNo != 0) {
+							return EPasaErrorCode.BadFormat;
+						}
 						epasa.Account = accNo;
 						var actualChecksum = AccountHelper.CalculateAccountChecksum(accNo);
 						if (accountNode.Checksum != null) {
@@ -395,6 +368,9 @@ namespace NPascalCoin.Common.Text {
 					if (!EPasaHelper.IsValidPayloadLength(epasa.PayloadType, epasa.Payload)) {
 						return EPasaErrorCode.PayloadTooLarge;
 					}
+				}
+				if (payloadNode.Password != null) {
+					epasa.Password = payloadNode.Password.Value;
 				}
 				return EPasaErrorCode.Success;
 			}

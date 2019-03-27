@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NPascalCoin.Common;
+﻿using System.IO;
 
 namespace NPascalCoin {
 	public static class StreamExtensions {

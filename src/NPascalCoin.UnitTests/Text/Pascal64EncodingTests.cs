@@ -145,5 +145,29 @@ namespace NPascalCoin.UnitTests.Text {
 
 
 		#endregion
+
+		#region Misc
+
+		[Test]
+		public void Encoding_EscapeString() {
+			var escaped = @"\(a\)b\{c\}d\[e\]f\:g\""h\<i\>";
+			var unescaped = @"(a)b{c}d[e]f:g""h<i>";
+			Assert.AreEqual(escaped, Pascal64Encoding.Escape(unescaped));
+			Assert.AreEqual(escaped, Pascal64Encoding.Escape(Pascal64Encoding.Escape(unescaped)));
+			Assert.IsFalse(Pascal64Encoding.IsValidEscaped(unescaped));
+			Assert.IsTrue(Pascal64Encoding.IsValidEscaped(escaped));			
+		}
+
+		[Test]
+		public void Encoding_UnescapedString() {
+			var escaped = @"\(a\)b\{c\}d\[e\]f\:g\""h\<i\>";
+			var unescaped = @"(a)b{c}d[e]f:g""h<i>";
+			Assert.AreEqual(unescaped, Pascal64Encoding.Unescape(escaped));
+			Assert.AreEqual(unescaped, Pascal64Encoding.Unescape(Pascal64Encoding.Unescape(escaped)));
+			Assert.IsFalse(Pascal64Encoding.IsValidUnescaped(escaped)); 
+			Assert.IsTrue(Pascal64Encoding.IsValidUnescaped(unescaped));
+		}
+
+		#endregion
 	}
 }

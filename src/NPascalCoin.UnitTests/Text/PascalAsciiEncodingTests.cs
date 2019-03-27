@@ -96,5 +96,30 @@ namespace NPascalCoin.UnitTests.Text {
 		}
 
 		#endregion
+
+		#region Misc
+
+		[Test]
+		public void Encoding_EscapeString() {
+			var unescaped = @"""a(b)c:d<e>f[g\h]i{j}";
+			var escaped = @"\""a\(b\)c\:d\<e\>f\[g\\h\]i\{j\}";
+			Assert.AreEqual(escaped, PascalAsciiEncoding.Escape(unescaped));
+			Assert.AreEqual(escaped, PascalAsciiEncoding.Escape(PascalAsciiEncoding.Escape(unescaped)));
+			Assert.IsTrue(PascalAsciiEncoding.IsValidEscaped(escaped));
+			Assert.IsTrue(PascalAsciiEncoding.IsValidEscaped(unescaped)); // unescaped is also a valid escaped string (unlike pascal64 encoding)
+		}
+
+		[Test]
+		public void Encoding_UnescapedString() {
+			var unescaped = @"""a(b)c:d<e>f[g\h]i{j}";
+			var escaped = @"\""a\(b\)c\:d\<e\>f\[g\\h\]i\{j\}";
+			Assert.AreEqual(unescaped, PascalAsciiEncoding.Unescape(escaped));
+			Assert.AreEqual(unescaped, PascalAsciiEncoding.Unescape(PascalAsciiEncoding.Unescape(escaped)));
+			Assert.IsTrue(PascalAsciiEncoding.IsValidUnescaped(escaped)); // escaped string is also valid as unescaped, since \ is allowed
+			Assert.IsTrue(PascalAsciiEncoding.IsValidUnescaped(unescaped));
+		}
+
+		#endregion
+
 	}
 }

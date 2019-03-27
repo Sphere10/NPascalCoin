@@ -22,7 +22,7 @@ namespace NPascalCoin.Common.Text {
 			PascalAsciiStringRegex = new Regex(PascalAsciiStringPattern, RegexOptions.Compiled);
 		}
 
-		public static bool IsValid(string safeAnsiString) {
+		public static bool IsValidEscaped(string safeAnsiString) {
 			return PascalAsciiStringRegex.IsMatch(safeAnsiString);
 		}
 
@@ -30,14 +30,12 @@ namespace NPascalCoin.Common.Text {
 			return unescapedPascalAsciiString.All(c => PascalAsciiCharSet.Contains(c));
 		}
 
-		public static string Escape(string unescapedPascalAsciiString) {
-			return unescapedPascalAsciiString
-				.Select(c => PascalAsciiCharSetEscaped.Contains(c) ? $@"{EscapeChar}{c}" : $"{c}")
-				.ToDelimittedString(string.Empty);
+		public static string Escape(string pascalAsciiString) {
+			return pascalAsciiString.Escape(EscapeChar, PascalAsciiCharSetEscaped.ToCharArray());
 		}
 
-		public static string Unescape(string escapedPascalAsciiString) {
-			throw new NotImplementedException();
+		public static string Unescape(string pascalAsciiString) {
+			return pascalAsciiString.Unescape(EscapeChar, PascalAsciiCharSetEscaped.ToCharArray());
 		}
 
 	}

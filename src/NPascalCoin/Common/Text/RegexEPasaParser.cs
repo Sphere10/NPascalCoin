@@ -68,7 +68,7 @@ namespace NPascalCoin.Common.Text {
 					return false;
 				}
 				epasa.PayloadType = epasa.PayloadType | PayloadType.AddressedByName;
-				epasa.AccountName = accountName;
+				epasa.AccountName = Pascal64Encoding.Unescape(accountName);
 				epasa.Account = epasa.AccountChecksum = null;
 			} else {
 				// Account Number
@@ -137,7 +137,7 @@ namespace NPascalCoin.Common.Text {
 					errorCode = EPasaErrorCode.MissingPassword;
 					return false;
 				}
-				epasa.Password = payloadPassword ?? "";
+				epasa.Password = PascalAsciiEncoding.Unescape(payloadPassword ?? "");
 			} else if (payloadPasswordDelim != null) {
 				errorCode = EPasaErrorCode.UnusedPassword;
 				return false;
@@ -149,7 +149,7 @@ namespace NPascalCoin.Common.Text {
 					epasa.Payload = string.Empty;
 				} else if (payloadContent.StartsWith("\"")) {
 					epasa.PayloadType = epasa.PayloadType | PayloadType.AsciiFormatted;
-					epasa.Payload = payloadContent.Trim('"');					
+					epasa.Payload = PascalAsciiEncoding.Unescape(payloadContent.Trim('"'));
 				} else if (payloadContent.StartsWith("0x")) {
 					epasa.PayloadType = epasa.PayloadType | PayloadType.HexFormatted;
 					epasa.Payload = payloadContent.Substring(2);

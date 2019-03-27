@@ -9,12 +9,10 @@ using Sphere10.Framework;
 
 namespace NPascalCoin.Common.Text {
 	public class PascalBase58Encoding {
-
 		public const string CharSet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 		public const string CharPattern = "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]";
 		public const string SubStringPattern = CharPattern + "+";
 		public const string StringPattern = SubStringPattern + "$";
-
 		private static Regex StringRegex;
 
 		public PascalBase58Encoding() {
