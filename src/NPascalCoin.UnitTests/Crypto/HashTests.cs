@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NPascalCoin.Crypto;
 using NUnit.Framework;
 using Sphere10.Framework;
@@ -80,12 +79,12 @@ namespace NPascalCoin.UnitTests.Crypto {
 
 		[Test]
 		public void TestMurMur3_AsHex() {
-			TestHash((bytes) => EndianBitConverter.Big.GetBytes(Hashers.MURMUR3_32(bytes)).ToHexString(), DATA_MURMUR3_32_HEX);
+			TestHash(bytes => EndianBitConverter.Big.GetBytes(Hashers.MURMUR3_32(bytes)).ToHexString(), DATA_MURMUR3_32_HEX);
 		}
 
 		[Test]
 		public void TestSHA2_256() {
-			TestHash((x) => Hashers.SHA2_256(x).ToHexString(), DATA_SHA2_256);
+			TestHash(x => Hashers.SHA2_256(x).ToHexString(), DATA_SHA2_256);
 		}
 
 		protected void TestHash<TResult>(Func<byte[], TResult> hasher, IEnumerable<TestItem<int, TResult>> testCases) {
