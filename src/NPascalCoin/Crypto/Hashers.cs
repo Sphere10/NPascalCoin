@@ -25,16 +25,12 @@ namespace NPascalCoin.Crypto {
 		private static readonly ConcurrentStack<Blake2bDigest> Blake2BHashers;
 		private static readonly ConcurrentStack<Blake2sDigest> Blake2SHashers;
 		private static readonly ConcurrentStack<TigerDigest> Tiger2_5_192Hashers;
-		//private static readonly ConcurrentStack<Snefru_8_256Digest> Snefru_8_256Hashers;
-		//private static readonly ConcurrentStack<Grindahl_512_Digest> Grindahl_512Hashers;
-		//private static readonly ConcurrentStack<Haval_5_256Digest> Haval_5_256Hashers;
+		private static readonly ConcurrentStack<Snefru8_256Digest> Snefru8_256Hashers;
+		private static readonly ConcurrentStack<Grindahl512Digest> Grindahl512Hashers;
+		private static readonly ConcurrentStack<Haval5_256Digest> Haval5_256Hashers;
 		private static readonly ConcurrentStack<MD5Digest> MD5Hashers;
-		//private static readonly ConcurrentStack<RadioGatun32Digest> RadioGatun32Hashers;
+		private static readonly ConcurrentStack<RadioGatun32Digest> RadioGatun32Hashers;
 		private static readonly ConcurrentStack<WhirlpoolDigest> WhirlpoolHashers;
-
-		// Snefru_8_256
-		// Grindahl512
-		// RadioGatun32
 
 		static Hashers() {
 			SHA2_256Hashers = new ConcurrentStack<SHA256Managed>();
@@ -49,11 +45,11 @@ namespace NPascalCoin.Crypto {
 			Blake2BHashers = new ConcurrentStack<Blake2bDigest>();
 			Blake2SHashers = new ConcurrentStack<Blake2sDigest>();
 			Tiger2_5_192Hashers = new ConcurrentStack<TigerDigest>();
-			//Snefru_8_256Hashers = new ConcurrentStack<Snefru_8_256Digest>();
-			//Grindahl_512Hashers = new ConcurrentStack<Grindahl_512_Digest>();
-			//Haval_5_256Digest = new ConcurrentStack<Haval_5_256Digest>();
+			Snefru8_256Hashers = new ConcurrentStack<Snefru8_256Digest>();
+			Grindahl512Hashers = new ConcurrentStack<Grindahl512Digest>();
+			Haval5_256Hashers = new ConcurrentStack<Haval5_256Digest>();
 			MD5Hashers = new ConcurrentStack<MD5Digest>();
-			//RadioGatun32Digest = new ConcurrentStack<RadioGatun32Digest>();
+			RadioGatun32Hashers = new ConcurrentStack<RadioGatun32Digest>();
 			WhirlpoolHashers = new ConcurrentStack<WhirlpoolDigest>();
 		}
 
@@ -230,6 +226,66 @@ namespace NPascalCoin.Crypto {
 				return result;
 			} finally {
 				Tiger2_5_192Hashers.Push(hasher);
+			}
+		}
+		
+		public static byte[] Snefru8_256(byte[] bytes) {
+			if (!Snefru8_256Hashers.TryPop(out var hasher)) {
+				hasher = new Snefru8_256Digest();
+			}
+			try {
+				var result = new byte[hasher.GetDigestSize()];
+				hasher.BlockUpdate(bytes, 0, bytes.Length);
+				hasher.DoFinal(result, 0);
+				hasher.Reset();
+				return result;
+			} finally {
+				Snefru8_256Hashers.Push(hasher);
+			}
+		}
+		
+		public static byte[] Grindahl512(byte[] bytes) {
+			if (!Grindahl512Hashers.TryPop(out var hasher)) {
+				hasher = new Grindahl512Digest();
+			}
+			try {
+				var result = new byte[hasher.GetDigestSize()];
+				hasher.BlockUpdate(bytes, 0, bytes.Length);
+				hasher.DoFinal(result, 0);
+				hasher.Reset();
+				return result;
+			} finally {
+				Grindahl512Hashers.Push(hasher);
+			}
+		}
+		
+		public static byte[] Haval5_256(byte[] bytes) {
+			if (!Haval5_256Hashers.TryPop(out var hasher)) {
+				hasher = new Haval5_256Digest();
+			}
+			try {
+				var result = new byte[hasher.GetDigestSize()];
+				hasher.BlockUpdate(bytes, 0, bytes.Length);
+				hasher.DoFinal(result, 0);
+				hasher.Reset();
+				return result;
+			} finally {
+				Haval5_256Hashers.Push(hasher);
+			}
+		}
+		
+		public static byte[] RadioGatun32(byte[] bytes) {
+			if (!RadioGatun32Hashers.TryPop(out var hasher)) {
+				hasher = new RadioGatun32Digest();
+			}
+			try {
+				var result = new byte[hasher.GetDigestSize()];
+				hasher.BlockUpdate(bytes, 0, bytes.Length);
+				hasher.DoFinal(result, 0);
+				hasher.Reset();
+				return result;
+			} finally {
+				RadioGatun32Hashers.Push(hasher);
 			}
 		}
 
