@@ -24,7 +24,7 @@ namespace NPascalCoin.Crypto {
 		private static readonly ConcurrentStack<RipeMD320Digest> RIPEMD320Hashers;
 		private static readonly ConcurrentStack<Blake2bDigest> Blake2BHashers;
 		private static readonly ConcurrentStack<Blake2sDigest> Blake2SHashers;
-		private static readonly ConcurrentStack<TigerDigest> Tiger2_5_192Hashers;
+		private static readonly ConcurrentStack<Tiger2_5_192Digest> Tiger2_5_192Hashers;
 		private static readonly ConcurrentStack<Snefru8_256Digest> Snefru8_256Hashers;
 		private static readonly ConcurrentStack<Grindahl512Digest> Grindahl512Hashers;
 		private static readonly ConcurrentStack<Haval5_256Digest> Haval5_256Hashers;
@@ -44,7 +44,7 @@ namespace NPascalCoin.Crypto {
 			RIPEMD320Hashers = new ConcurrentStack<RipeMD320Digest>();
 			Blake2BHashers = new ConcurrentStack<Blake2bDigest>();
 			Blake2SHashers = new ConcurrentStack<Blake2sDigest>();
-			Tiger2_5_192Hashers = new ConcurrentStack<TigerDigest>();
+			Tiger2_5_192Hashers = new ConcurrentStack<Tiger2_5_192Digest>();
 			Snefru8_256Hashers = new ConcurrentStack<Snefru8_256Digest>();
 			Grindahl512Hashers = new ConcurrentStack<Grindahl512Digest>();
 			Haval5_256Hashers = new ConcurrentStack<Haval5_256Digest>();
@@ -216,7 +216,7 @@ namespace NPascalCoin.Crypto {
 
 		public static byte[] Tiger2_5_192(byte[] bytes) {
 			if (!Tiger2_5_192Hashers.TryPop(out var hasher)) {
-				hasher = new TigerDigest();
+				hasher = new Tiger2_5_192Digest();
 			}
 			try {
 				var result = new byte[hasher.GetDigestSize()];

@@ -478,10 +478,10 @@ namespace NPascalCoin.UnitTests.Crypto {
 			TestHash(x => Hashers.BLAKE2S(x).ToHexString(), DATA_BLAKE2S);
 		}
 		
-/*		[Test]
+		[Test]
 		public void TestTiger2_5_192() {
 			TestHash(x => Hashers.Tiger2_5_192(x).ToHexString(), DATA_TIGER2_5_192);
-		}*/
+		}
 		
 		[Test]
 		public void TestSnefru8_256() {
