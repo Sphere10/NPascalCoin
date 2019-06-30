@@ -52,10 +52,9 @@ namespace NPascalCoin.Common {
 			throw new ArgumentException("Invalid E-PASA format", nameof(EPasaText));
 		}
 
-		public static bool TryParse(string EPasaText, out EPasa epasa) {
-			throw new NotImplementedException();
+		public static bool TryParse(string epasaText, out EPasa epasa) {
 			var EParser = new RecursiveDescentEPasaParser();
-			//return EParser.TryParseEPasa(EPasaText, out epasa);		
+			return EParser.TryParse(epasaText, out epasa);		
 		}
 
 
