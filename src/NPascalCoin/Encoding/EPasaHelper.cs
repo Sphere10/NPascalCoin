@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using NPascalCoin.Common;
-using NPascalCoin.Common.Text;
 using NPascalCoin.Crypto;
+using NPascalCoin.Payloads;
 using Sphere10.Framework;
 
-namespace NPascalCoin.Common {
+namespace NPascalCoin.Encoding {
 
 	public static class EPasaHelper {
 		public const int MaxPublicAsciiContentLength = 255;
@@ -25,7 +20,7 @@ namespace NPascalCoin.Common {
 		public static string ComputeExtendedChecksum(string text) {
 			if (text == null)
 				throw new ArgumentNullException(nameof(text));
-			var checksum = (ushort) (Hashers.MURMUR3_32(Encoding.ASCII.GetBytes(text), ExtendedChecksumMurMur3Seed) % 65536);
+			var checksum = (ushort) (Hashers.MURMUR3_32(System.Text.Encoding.ASCII.GetBytes(text), ExtendedChecksumMurMur3Seed) % 65536);
 			return EndianBitConverter.Little.GetBytes(checksum).ToHexString(true);
 		}
 

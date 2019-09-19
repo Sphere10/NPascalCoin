@@ -7,8 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Sphere10.Framework;
 
-namespace NPascalCoin.Common.Text {
-	public class Pascal64Encoding {
+namespace NPascalCoin.Encoding {
+	public static class Pascal64Encoding {
 		public const char EscapeChar = '\\';
 		public const string CharSet = @"abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-+{}[]_:""`|<>,.?/~";
 		public const string CharSetStart = @"abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+{}[]_:""`|<>,.?/~";

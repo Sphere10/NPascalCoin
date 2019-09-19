@@ -511,7 +511,7 @@ namespace NPascalCoin.API.Classic {
 
 
 				// serialize json for the request
-				var requestBytes = Encoding.UTF8.GetBytes(requestJson);
+				var requestBytes = System.Text.Encoding.UTF8.GetBytes(requestJson);
 				webRequest.ContentLength = requestBytes.Length;
 				using (var requestStream = webRequest.GetRequestStream()) {
 					requestStream.Write(requestBytes, 0, requestBytes.Length);

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NPascalCoin.Accounts;
 using Sphere10.Framework;
 
 using  NPascalCoin.Common;
 
-namespace NPascalCoin.Common.Text {
+namespace NPascalCoin.Encoding {
 	public static class Extensions {
 
 		public static EPasa Parse(this IEPasaParser parser, string epasaText) {

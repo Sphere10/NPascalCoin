@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using NPascalCoin.Accounts;
+using NPascalCoin.Payloads;
 using Sphere10.Framework;
 
-namespace NPascalCoin.Common.Text {
+namespace NPascalCoin.Encoding {
 
 	public class RecursiveDescentEPasaParser : EPasaParserBase {
 

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NPascalCoin.Accounts;
 using NPascalCoin.API.Classic.Objects;
 using NPascalCoin.Common;
+using NPascalCoin.Payloads;
 
-namespace NPascalCoin.Common.Text {
+namespace NPascalCoin.Encoding {
 	public class RegexEPasaParser : EPasaParserBase {
 		// note: regex syntax escapes following chars [\^$.|?*+(){}
 		// note: epasa syntax escapes following chars: :\"[]()<>(){}

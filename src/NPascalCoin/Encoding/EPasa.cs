@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NPascalCoin.API.Classic.Objects;
-using NPascalCoin.Common.Text;
+using NPascalCoin.Common;
+using NPascalCoin.Payloads;
 using Sphere10.Framework;
 
-
-namespace NPascalCoin.Common {
+namespace NPascalCoin.Encoding {
 
 	public class EPasa {
 

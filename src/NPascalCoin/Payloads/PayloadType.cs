@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NPascalCoin.Common {
+namespace NPascalCoin.Payloads {
 
 	[Flags]
 	public enum PayloadType {

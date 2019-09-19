@@ -7,8 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Sphere10.Framework;
 
-namespace NPascalCoin.Common.Text {
-	public class HexEncoding {
+namespace NPascalCoin.Encoding {
+	public static class HexEncoding {
 		public const string CharSet = "0123456789abcdef";
 		public const string NibblePattern = @"[0-9a-f]";
 		public const string BytePattern = NibblePattern + "{2}";

@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using NPascalCoin.Accounts;
 using NPascalCoin.Common;
 using Sphere10.Framework;
 

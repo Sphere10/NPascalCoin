@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NPascalCoin.Common {
+namespace NPascalCoin.Operations {
 	public static class OperationHelper {
 		
 		public static string GetOperationID(string ophash) {
