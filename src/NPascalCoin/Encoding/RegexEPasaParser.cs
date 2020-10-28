@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NPascalCoin.Accounts;
-using NPascalCoin.API.Classic.Objects;
+using NPascalCoin.API.Objects;
 using NPascalCoin.Common;
 using NPascalCoin.Payloads;
 

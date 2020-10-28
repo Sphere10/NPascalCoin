@@ -20,7 +20,7 @@ namespace NPascalCoin.Encoding {
 		public static string ComputeExtendedChecksum(string text) {
 			if (text == null)
 				throw new ArgumentNullException(nameof(text));
-			var checksum = (ushort) (Hashers.MURMUR3_32(System.Text.Encoding.ASCII.GetBytes(text), ExtendedChecksumMurMur3Seed) % 65536);
+			var checksum = (ushort) (NPascalCoin.Crypto.Hashers.MURMUR3_32(System.Text.Encoding.ASCII.GetBytes(text), ExtendedChecksumMurMur3Seed) % 65536);
 			return EndianBitConverter.Little.GetBytes(checksum).ToHexString(true);
 		}
 

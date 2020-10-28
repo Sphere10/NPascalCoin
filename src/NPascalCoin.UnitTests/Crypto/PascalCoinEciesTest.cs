@@ -121,7 +121,7 @@ namespace NPascalCoin.UnitTests.Crypto
             cipherEncrypt.Init(true, RecreatePublicKeyFromAffineXandAffineYCoord(keyType,
                     Hex.Decode(rawAffineXCoord), Hex.Decode(rawAffineYCoord)),
                 GetPascalCoinIesParameterSpec(), SecureRandom);
-            return Hex.ToHexString(cipherEncrypt.DoFinal(Encoding.ASCII.GetBytes
+            return Hex.ToHexString(cipherEncrypt.DoFinal(System.Text.Encoding.ASCII.GetBytes
                 (payloadToEncrypt)));
         }
 
@@ -138,7 +138,7 @@ namespace NPascalCoin.UnitTests.Crypto
                         Hex.Decode(rawPrivateKey)),
                     GetPascalCoinIesParameterSpec(), SecureRandom);
 
-                result = Encoding.ASCII.GetString(cipherDecrypt.DoFinal(Hex.Decode
+                result = System.Text.Encoding.ASCII.GetString(cipherDecrypt.DoFinal(Hex.Decode
                     (payloadToDecrypt)));
             }
             catch (Exception e)

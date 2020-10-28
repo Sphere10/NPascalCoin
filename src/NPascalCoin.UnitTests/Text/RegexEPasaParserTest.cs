@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NPascalCoin.Common.Text;
+using NPascalCoin.Encoding;
 using NUnit.Framework;
 using NPascalCoin.UnitTests;
 
@@ -44,7 +44,7 @@ namespace NPascalCoin.UnitTests.Text {
 		public void HexNibble_Illegal() {
 			var illegalCharSet = Enumerable
 				.Range(0, 255)
-				.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
+				.Select(x => System.Text.Encoding.ASCII.GetString(new[] { (byte)x })[0])
 				.Where(c => !HexEncoding.CharSet.Contains(c));
 
 			foreach (var ch in illegalCharSet)
@@ -87,7 +87,7 @@ namespace NPascalCoin.UnitTests.Text {
 		public void Base58Char_Illegal() {
 			var illegalCharSet = Enumerable
 				.Range(0, 255)
-				.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
+				.Select(x => System.Text.Encoding.ASCII.GetString(new[] { (byte)x })[0])
 				.Where(c => !PascalBase58Encoding.CharSet.Contains(c));
 
 			foreach (var ch in illegalCharSet)

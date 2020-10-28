@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using NPascalCoin.Common;
-using NPascalCoin.Common.Text;
+using NPascalCoin.Encoding;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Sphere10.Framework;
@@ -42,7 +42,7 @@ namespace NPascalCoin.UnitTests.Text {
 		public void PascalAsciiCharPattern_IllegalChar() {
 			var illegalCharSet = Enumerable
 				.Range(0, 255)
-				.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
+				.Select(x => System.Text.Encoding.ASCII.GetString(new[] { (byte)x })[0])
 				.Where(c => !PascalAsciiEncoding.CharSet.Contains(c));
 
 			foreach (var ch in illegalCharSet)
@@ -86,7 +86,7 @@ namespace NPascalCoin.UnitTests.Text {
 			var illegalCharSet =
 				Enumerable
 					.Range(0, 255)
-					.Select(x => Encoding.ASCII.GetString(new[] { (byte)x })[0])
+					.Select(x => System.Text.Encoding.ASCII.GetString(new[] { (byte)x })[0])
 					.Where(c => !PascalAsciiEncoding.CharSet.Contains(c))
 					.ToDelimittedString(string.Empty);
 

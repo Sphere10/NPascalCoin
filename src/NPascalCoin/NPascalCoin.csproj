@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Version>1.0.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -16,14 +16,16 @@
     <PackageTags>PascalCoin, C#, Cryptocurrency, Blockchain</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
+    <Compile Remove="SafeBox\**" />
+    <EmbeddedResource Remove="SafeBox\**" />
+    <None Remove="SafeBox\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SafeBox\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.8" />
+    <PackageReference Include="Sphere10.Framework" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Framework\src\Sphere10.Framework\Sphere10.Framework.csproj" />
   </ItemGroup>
 </Project>
