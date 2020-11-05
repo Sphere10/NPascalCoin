@@ -14,19 +14,21 @@ namespace NPascalCoin.Encoding {
 			PayloadType = payloadType;
 		}
 		
-		public uint? Account { get; set; }
+		public uint? Account { get; internal set; }
 
-		public uint? AccountChecksum { get; set; }
+		public uint? AccountChecksum { get; internal set; }
 
-		public string AccountName { get; set; }
+		public string AccountName { get; internal set; }
 
-		public PayloadType PayloadType { get; set; }
+		public bool IsPayToKey => AccountName == "@" && PayloadType.HasFlag(PayloadType.AddressedByName | PayloadType.Public | PayloadType.Base58Formatted);
 
-		public string Payload { get; set; }
+		public PayloadType PayloadType { get; internal set; }
 
-		public string Password { get; set; }
+		public string Payload { get; internal set; }
 
-		public string ExtendedChecksum { get; set; }
+		public string Password { get; internal set; }
+
+		public string ExtendedChecksum { get; internal set; }
 
 		public byte[] GetRawPayloadBytes() {
 			if (PayloadType.HasFlag(PayloadType.AsciiFormatted)) {
@@ -50,7 +52,7 @@ namespace NPascalCoin.Encoding {
 		}
 
 		public static bool TryParse(string epasaText, out EPasa epasa) {
-			var EParser = new RecursiveDescentEPasaParser();
+			var EParser = new RegexEPasaParser();
 			return EParser.TryParse(epasaText, out epasa);		
 		}
 

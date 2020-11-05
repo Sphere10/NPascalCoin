@@ -264,7 +264,7 @@ namespace NPascalCoin.Encoding {
 				case TokenType.Pascal64String:
 					return Pascal64Encoding.CharSetStart.Contains($"{c}") || c == Pascal64Encoding.EscapeChar;
 				case TokenType.HexString:
-					return HexEncoding.CharSet.Contains($"{c}");
+					return c == '0';
 				case TokenType.Base58String:
 					return PascalBase58Encoding.CharSet.Contains($"{c}");
 				default:
@@ -292,7 +292,7 @@ namespace NPascalCoin.Encoding {
 				case TokenType.Pascal64String:
 					return Pascal64Encoding.CharSet.Contains(c.ToString()) || c == Pascal64Encoding.EscapeChar;
 				case TokenType.HexString:
-					return HexEncoding.CharSet.Contains(c.ToString());
+					return HexEncoding.CharSet.Contains($"{c}");
 				case TokenType.Base58String:
 					return PascalBase58Encoding.CharSet.Contains(c.ToString());
 				default:

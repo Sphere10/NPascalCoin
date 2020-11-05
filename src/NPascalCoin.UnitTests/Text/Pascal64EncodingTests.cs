@@ -132,17 +132,16 @@ namespace NPascalCoin.UnitTests.Text {
 		}
 
 		[Test]
-		public void Pascal64StringPattern_TooShort() {
-			var badInput = @"bb";
-			AssertEx.RegexNotMatch(badInput, Pascal64Encoding.StringPattern);
+		public void Pascal64StringPattern_Short() {
+			var badInput = @"@";
+			AssertEx.RegexMatch(badInput, Pascal64Encoding.StringPattern);
 		}
 
 		[Test]
-		public void Pascal64StringPattern_TooLong() {
-			var badInput = Enumerable.Range(0, 65).Select(c => 'b').ToDelimittedString(string.Empty);
-			AssertEx.RegexNotMatch(badInput, Pascal64Encoding.StringPattern);
+		public void Pascal64StringPattern_Long() {
+			var badInput = Enumerable.Range(0, 256).Select(c => 'b').ToDelimittedString(string.Empty);
+			AssertEx.RegexMatch(badInput, Pascal64Encoding.StringPattern);
 		}
-
 
 		#endregion
 

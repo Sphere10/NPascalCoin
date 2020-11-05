@@ -176,8 +176,12 @@ namespace NPascalCoin.Encoding {
 				}
 			}
 			epasa.ExtendedChecksum = actualChecksum;
+
+			
+
 			return true;
 		}
-		
+
+
 	}
 }

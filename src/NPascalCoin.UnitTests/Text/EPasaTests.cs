@@ -250,6 +250,53 @@ namespace NPascalCoin.UnitTests.Text {
 		}
 
 		[Test]
+		public void AccountName_Short() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("a", out var epasa));
+		}
+
+		[Test]
+		public void AccountName_Short_WithChecksum() {
+			var parser = NewInstance();
+			var epasaText = "a";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
+		}
+
+
+		[Test]
+		public void PayToKey() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("@[1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2]", out var epasa));
+			Assert.IsTrue(epasa.IsPayToKey);
+		}
+
+		[Test]
+		public void PayToKey_WithChecksum() {
+			var parser = NewInstance();
+			var epasaText = "@[1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2]";
+			var checksum = EPasaHelper.ComputeExtendedChecksum(epasaText);
+			epasaText = $"{epasaText}:{checksum}";
+			Assert.IsTrue(parser.TryParse(epasaText, out var epasa));
+			Assert.IsTrue(epasa.IsPayToKey);
+		}
+
+		[Test]
+		public void NotPayToKey_1() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("@<1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2>", out var epasa));
+			Assert.IsFalse(epasa.IsPayToKey);
+		}
+
+		[Test]
+		public void NotPayToKey_2() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("@[0x0123456789abcdef]", out var epasa));
+			Assert.IsFalse(epasa.IsPayToKey);
+		}
+
+		[Test]
 		public void EdgeCase_AllEscapeChars() {
 			var parser = NewInstance();
 			var name = @"(a)b{c}d[e]f:g""h<i>";
