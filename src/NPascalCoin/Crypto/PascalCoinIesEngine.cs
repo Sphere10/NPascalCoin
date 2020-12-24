@@ -212,13 +212,16 @@ namespace NPascalCoin.Crypto
                 KdfParameters kdfParam = new KdfParameters(bigZ, null);
                 Kdf.Init(kdfParam);
 
-                byte[] temp = new byte[inLen - SecureHeadSize];
-
-                Array.Copy(@in, inOff + SecureHeadSize, temp, 0, temp.Length);
-
-                return ForEncryption
-                    ? EncryptBlock(@in, inOff, inLen)
-                    : DecryptBlock(temp, inOff, temp.Length);
+                if (ForEncryption)
+                {
+                    return EncryptBlock(@in, inOff, inLen);
+                }
+                else
+                {
+                    byte[] temp = new byte[inLen - SecureHeadSize];
+                    Array.Copy(@in, inOff + SecureHeadSize, temp, 0, temp.Length);
+                    return DecryptBlock(temp, inOff, temp.Length);
+                }
             }
             finally
             {
