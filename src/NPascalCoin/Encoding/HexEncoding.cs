@@ -12,7 +12,7 @@ namespace NPascalCoin.Encoding {
 		public const string CharSet = "0123456789abcdef";
 		public const string NibblePattern = @"[0-9a-f]";
 		public const string BytePattern = NibblePattern + "{2}";
-		public const string SubStringPattern = "(?:" + BytePattern + ")+";
+		public const string SubStringPattern = "(?:" + BytePattern + ")*";
 		public const string StringPattern = SubStringPattern + "$";
 
 		private static readonly Regex HexStringRegex;
