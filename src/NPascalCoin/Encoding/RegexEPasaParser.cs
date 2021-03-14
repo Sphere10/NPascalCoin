@@ -13,7 +13,7 @@ namespace NPascalCoin.Encoding {
 		// note: regex syntax escapes following chars [\^$.|?*+(){}
 		// note: epasa syntax escapes following chars: :\"[]()<>(){}
 		// note: c-sharp syntax verbatim strings escape: " as ""
-		public const string IntegerPattern = @"(0|[1-9]\d+)";
+		public const string IntegerPattern = @"(0|[1-9]\d*)";
 		public const string AccountNamePattern = @"(?<AccountName>" + Pascal64Encoding.StringPattern + ")";
 		public const string AccountChecksumPattern = @"(?:(?<ChecksumDelim>-)(?<Checksum>\d{2}))?";
 		public const string AccountNumberPattern = "(?<AccountNumber>" + IntegerPattern + ")" + AccountChecksumPattern ;

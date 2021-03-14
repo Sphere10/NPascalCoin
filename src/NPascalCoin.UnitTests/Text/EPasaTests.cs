@@ -29,6 +29,18 @@ namespace NPascalCoin.UnitTests.Text {
 		}
 
 		[Test]
+		public void AccountNumber_1() {
+			var parser = NewInstance();
+			Assert.IsTrue(parser.TryParse("1", out var epasa));
+			Assert.AreEqual(1, epasa.Account);
+			Assert.AreEqual(22, epasa.AccountChecksum);
+			Assert.AreEqual(EPasaHelper.ComputeExtendedChecksum("1-22"), epasa.ExtendedChecksum);
+			Assert.AreEqual(PayloadType.NonDeterministic, epasa.PayloadType);
+			Assert.AreEqual($"1-22:{EPasaHelper.ComputeExtendedChecksum("1-22")}", epasa.ToString());
+		}
+
+
+		[Test]
 		public void AccountNumber_Illegal() {
 			var parser = NewInstance();
 			Assert.IsFalse(parser.TryParse("077", out var epasa));

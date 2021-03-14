@@ -3,52 +3,52 @@
 namespace NPascalCoin.Payloads {
 
 	[Flags]
-	public enum PayloadType {
+	public enum PayloadType : byte {
 
 		/// <summary>
 		/// Payload encryption and encoding method not specified.
 		/// </summary>
-		NonDeterministic = 0x00000000,
+		NonDeterministic        = 0,
 
 		/// <summary>
 		/// Unencrypted, public payload.
 		/// </summary>
-		Public = 0x00000001,
+		Public                  = 1 << 0,
 
 		/// <summary>
 		/// ECIES encrypted using recipient accounts public key.
 		/// </summary>		
-		RecipientKeyEncrypted = 0x00000010,
+		RecipientKeyEncrypted   = 1 << 1,
 
 		/// <summary>
 		/// ECIES encrypted using sender accounts public key.
 		/// </summary>
-		SenderKeyEncrypted = 0x00000100,
+		SenderKeyEncrypted      = 1 << 2,
 
 		/// <summary>
 		/// AES encrypted using pwd param
 		/// </summary>
-		PasswordEncrypted = 0x00001000,
+		PasswordEncrypted       = 1 << 3,
 
 		/// <summary>
 		/// Payload data encoded in ASCII
 		/// </summary>
-		AsciiFormatted = 0x00010000,
+		AsciiFormatted          = 1 << 4,
 
 		/// <summary>
 		/// Payload data encoded in HEX
 		/// </summary>
-		HexFormatted = 0x00100000,
+		HexFormatted            = 1 << 5,
 
 		/// <summary>
 		/// Payload data encoded in Base58
 		/// </summary>
-		Base58Formatted = 0x01000000,
+		Base58Formatted         = 1 << 6,
 
 		/// <summary>
 		/// E-PASA addressed by account name (not number).
 		/// </summary>
-		AddressedByName = 0x10000000,
+		AddressedByName         = 1 << 7,
 
 	}
 }
